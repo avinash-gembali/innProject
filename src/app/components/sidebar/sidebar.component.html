@@ -78,7 +78,11 @@
             <span>Staff Directory</span>
           </div>
         </mat-list-item>
-        <mat-list-item routerLink="#">
+        <mat-list-item
+          [routerLink]="['/helpers']"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: false }"
+        >
           <div class="submenu-item">
             <mat-icon class="submenu-icon">person</mat-icon>
             <span>Helpers</span>
@@ -148,4 +152,3 @@
     <div class="arrow">&gt;</div>
   </div>
 </div>
-

@@ -12,19 +12,17 @@
   flex-direction: column;
 }
 
-
 h1 {
   font-size: 30px;
-  margin-bottom: 0px; 
+  margin-bottom: 0px;
   color: black;
   font-style: bold;
 }
 
 h6 {
-  margin-top: 0;   
+  margin-top: 0;
   color: black;
 }
-
 
 .arrow-icon {
   transition: transform 0.2s ease-in-out;
@@ -71,12 +69,6 @@ h6 {
       span {
         vertical-align: middle;
       }
-    }
-
-    &:hover .submenu-item {
-      background-color: #f2f2f2;
-      border-radius: 4px;
-      padding: 4px;
     }
   }
 }
@@ -126,5 +118,15 @@ h6 {
     font-size: 16px;
     color: #999;
     margin-left: auto;
+  }
+}
+
+.active-link {
+  background-color: #e0f7fa !important; 
+  font-weight: 600;
+  color: #00796b;
+
+  .submenu-icon {
+    color: #00796b;
   }
 }

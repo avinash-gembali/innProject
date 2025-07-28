@@ -1,0 +1,101 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .selected-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    p {
+      margin: 0;
+      color: #777;
+    }
+  }
+
+  .right {
+    display: flex;
+    gap: 8px;
+  }
+}
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; // spacing between h4 and its fields
+
+  h4 {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+
+    &::after {
+      content: "";
+      flex-grow: 1;
+      height: 1px;
+      background-color: #ccc;
+      margin-left: 12px;
+    }
+  }
+
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 0; // equal vertical spacing for each field row
+
+    label {
+      width: 140px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .value {
+      flex: 1;
+      color: #555;
+    }
+
+    .view-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px; // tight but readable
+      color: #5c6bc0;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+
+      mat-icon {
+        font-size: 18px;
+        line-height: 1;
+        vertical-align: middle;
+        transform: translateY(1px); // slight adjustment
+      }
+    }
+  }
+}
+
+.selected-user-details {
+  transform: scale(0.92); // adjust between 0.8 - 0.9 based on fit
+  transform-origin: top center;
+  max-height: 100%;
+  max-width: 100%;
+  width: 800px; // or adjust as needed
+}
+
+

@@ -1,74 +1,26 @@
-<div class="users-container">
+<div class="helpers-container">
   <!-- Sidebar -->
   <div class="profiles">
-    <div 
-      *ngFor="let user of helpers" 
+    <div
+      *ngFor="let helper of helpers"
       class="profile-card"
-      [class.active]="selectedHelper?.id === user.id"
-      (click)="selectUser(user)"
+      [class.active]="selectedHelper?.id === helper.id"
+      (click)="selectHelper(helper)"
     >
-      <img [src]="user.imageUrl" alt="{{ user.name }}" class="profile-img" />
+      <img [src]="helper.imageUrl" alt="{{ helper.name }}" class="profile-img" />
       <div class="profile-details">
-        <h3>{{ user.name }}</h3>
-        <p>{{ user.role }}</p>
+        <h3>{{ helper.name }}</h3>
+        <p>{{ helper.role }}</p>
       </div>
-      <div class="households">
-        {{ 0 }} households
-      </div>
+      <div class="households">{{ 0 }} households</div>
     </div>
   </div>
-
-  <!-- Selected User Details -->
-  <div class="selectedHelper" *ngIf="selectedHelper">
-    <div class="header">
-      <div class="left">
-        <img [src]="selectedHelper.imageUrl" class="selected-img" />
-        <div>
-          <h2>{{ selectedHelper.name }}</h2>
-          <p>{{ selectedHelper.role }}</p>
-        </div>
-      </div>
-      <div class="right">
-        <button mat-icon-button><mat-icon>edit</mat-icon></button>
-        <button mat-icon-button color="warn"><mat-icon>delete</mat-icon></button>
-      </div>
-    </div>
-
-    <div class="section">
-      <h4>Employee ID</h4>
-      <p>{{ selectedHelper.employeeId }}</p>
-
-      <h4>Identification</h4>
-      <p>
-        {{ selectedHelper.identificationCard }}
-        <button mat-icon-button color="primary" title="View ID">
-          <mat-icon>visibility</mat-icon>
-        </button>
-      </p>
-
-      <h4>Employee Code</h4>
-      <p>{{ selectedHelper.employeeCode }}</p>
-    </div>
-
-    <div class="section">
-      <h4>Personal Details</h4>
-      <p>Gender: {{ selectedHelper.gender }}</p>
-      <p>Languages: {{ selectedHelper.languages.join(', ') }}</p>
-      <p>Mobile: {{ selectedHelper.mobileNo }}</p>
-      <p>Email: {{ selectedHelper.emailId || '-' }}</p>
-      <p>
-        KYC Document: {{ selectedHelper.kycDocument }}
-        <button mat-icon-button color="primary" title="View KYC">
-          <mat-icon>visibility</mat-icon>
-        </button>
-      </p>
-    </div>
-
-    <div class="section">
-      <h4>Service Details</h4>
-      <p>Type: {{ selectedHelper.type }}</p>
-      <p>Organization: {{ selectedHelper.organization }}</p>
-      <p>Joined On: {{ selectedHelper.joinedOn }}</p>
+  <div class="selectedContainer">
+    <div class="selectedHelper" *ngIf="selectedHelper">
+      <app-selected-helper
+        *ngIf="selectedHelper"
+        [selectedHelper]="selectedHelper"
+      ></app-selected-helper>
     </div>
   </div>
 </div>
