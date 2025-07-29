@@ -1,0 +1,158 @@
+:host {
+  display: block;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+p {
+  margin-bottom: 24px;
+  color: #555;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+mat-form-field.full-width {
+  height: 48px;
+
+  .mat-form-field-wrapper,
+  .mat-form-field-flex {
+    height: 100%;
+    align-items: center;
+  }
+
+  .mat-select-trigger {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+}
+
+input.full-width,
+.vehicle-wrapper input,
+.phone-wrapper .phone-input,
+input[type='email'] {
+  width: 100%;
+  height: 48px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.upload {
+  width: 160px;
+  height: 160px;
+  border: 2px dotted #3f51b5;
+  border-radius: 50%;
+  background-color: #e8eaf6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  text-align: center;
+
+  mat-icon {
+    font-size: 36px;
+    color: #3f51b5;
+    margin-bottom: 8px;
+  }
+
+  button {
+    background: none;
+    border: none;
+    color: #3f51b5;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 4px;
+  }
+
+  p {
+    font-size: 12px;
+    color: #666;
+  }
+}
+
+.phone-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+
+  .country-code {
+    height: 48px;
+    padding: 0 12px;
+    border: 1px solid #ccc;
+    border-right: none;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .phone-input {
+    flex: 1;
+    height: 48px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+}
+
+.vehicle-wrapper {
+  margin-bottom: 20px;
+
+  input {
+    height: 48px;
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+  }
+}
+
+mat-form-field {
+  margin-bottom: 20px;
+
+  .option-icon {
+    margin-right: 8px;
+    color: #3f51b5;
+  }
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+
+  span {
+    color: red;
+  }
+}
+
+.kyc-upload {
+  width: 120px;
+  height: 120px;
+  border: 2px dotted #3f51b5;
+  background-color: #e8eaf6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+
+  button {
+    font-size: 28px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    color: #3f51b5;
+    cursor: pointer;
+  }
+}
