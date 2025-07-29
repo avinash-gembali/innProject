@@ -34,25 +34,28 @@ export class HelperDetailsComponent {
   organizationControl = new FormControl();
   organizations = ['ASBL', 'Spring Helpers'];
 
-languageControl = new FormControl<string[]>([]);
-languages: string[] = ['Hindi', 'English', 'Telugu'];
+  languageControl = new FormControl<string[]>([]);
+  languages: string[] = ['Hindi', 'English', 'Telugu'];
 
-toggleSelectAll() {
-  const selected = this.languageControl.value || [];
+  toggleSelectAll() {
+    const selected = this.languageControl.value || [];
 
-  if (this.isAllSelected()) {
-    // Deselect all
-    this.languageControl.setValue([]);
-  } else {
-    // Select all languages
-    this.languageControl.setValue(['selectall',...this.languages]);
+    if (this.isAllSelected()) {
+      // Deselect all
+      this.languageControl.setValue([]);
+    } else {
+      // Select all languages
+      this.languageControl.setValue(['selectall', ...this.languages]);
+    }
   }
-}
 
-isAllSelected(): boolean {
-  const selected = this.languageControl.value || [];
-  return this.languages.length > 0 && this.languages.every(lang => selected.includes(lang));
-}
+  isAllSelected(): boolean {
+    const selected = this.languageControl.value || [];
+    return (
+      this.languages.length > 0 &&
+      this.languages.every((lang) => selected.includes(lang))
+    );
+  }
   vehicleControl = new FormControl();
   vehicles = ['none', 'Bike', 'Car', 'Auto'];
   get showPhoneField(): boolean {
