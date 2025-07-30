@@ -2,17 +2,21 @@
 <p>Track, Add & Manage all your helpers at one place</p>
 
 <!-- Upload Photo -->
-<div class="upload">
+<div class="upload" (click)="fileInput.click()">
   <mat-icon>cloud_upload</mat-icon>
-  <button>Upload Photo</button>
+  <button mat-button>Upload Photo</button>
+  <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
 </div>
 <p>Upload Photo (.png, .jpeg) size 5mb</p>
-
 
 <!-- Type of Service -->
 <label for="service">Type of service <span>*</span></label>
 <mat-form-field appearance="outline" class="full-width" floatLabel="always">
-  <mat-select id="service" [formControl]="serviceControl" placeholder="Type of service">
+  <mat-select
+    id="service"
+    [formControl]="serviceControl"
+    placeholder="Type of service"
+  >
     <mat-option *ngFor="let service of services" [value]="service.name">
       <mat-icon class="option-icon">{{ service.icon }}</mat-icon>
       {{ service.name }}
@@ -23,8 +27,15 @@
 <!-- Organization -->
 <label for="organization">Organization Name <span>*</span></label>
 <mat-form-field appearance="outline" class="full-width" floatLabel="always">
-  <mat-select id="organization" [formControl]="organizationControl" placeholder="Organization Name">
-    <mat-option *ngFor="let organization of organizations" [value]="organization">
+  <mat-select
+    id="organization"
+    [formControl]="organizationControl"
+    placeholder="Organization Name"
+  >
+    <mat-option
+      *ngFor="let organization of organizations"
+      [value]="organization"
+    >
       {{ organization }}
     </mat-option>
   </mat-select>
@@ -42,9 +53,12 @@
     multiple
     placeholder="Select languages"
   >
+    <mat-select-trigger>
+      {{ getSelectedLanguagesDisplay() }}
+    </mat-select-trigger>
     <!-- "Select All" should not be part of value list -->
     <mat-option
-      (click)="toggleSelectAll(); $event.stopPropagation();"
+      (click)="toggleSelectAll(); $event.stopPropagation()"
       [value]="null"
     >
       Select All
@@ -56,14 +70,25 @@
   </mat-select>
 </mat-form-field>
 
+<!-- Gender -->
+
+<label for="gender">Gender <span>*</span></label>
+<mat-radio-group>
+  <mat-radio-button value="male" color="primary">Male</mat-radio-button>
+  <mat-radio-button value="female" color="primary">Female</mat-radio-button>
+  <mat-radio-button value="other" color="primary">Other</mat-radio-button>
+</mat-radio-group>
 
 <!-- Phone Number -->
 <label for="phone">Phone Number <span>*</span></label>
 <div class="phone-wrapper">
-  <div class="country-code">
-    +91 <mat-icon>keyboard_arrow_down</mat-icon>
-  </div>
-  <input type="text" id="phone" placeholder="Phone Number" class="phone-input" />
+  <div class="country-code">+91 <mat-icon>keyboard_arrow_down</mat-icon></div>
+  <input
+    type="text"
+    id="phone"
+    placeholder="Phone Number"
+    class="phone-input"
+  />
 </div>
 
 <!-- Email -->
@@ -81,7 +106,7 @@
 </mat-form-field>
 
 <!-- Vehicle Number (Conditional) -->
-<div *ngIf="showPhoneField" style="margin-top: 16px;">
+<div *ngIf="showPhoneField" style="margin-top: 16px">
   <label for="vehicleNumber">Vehicle Number <span>*</span></label>
   <div class="vehicle-wrapper">
     <input type="text" id="vehicleNumber" placeholder="Vehicle Number" />
@@ -90,6 +115,6 @@
 
 <!-- KYC Upload -->
 <label for="document">KYC Document <span>*</span></label>
-<div class="kyc-upload">
+<div class="kyc-upload" (click)="openUploadDialog()">
   <button>+</button>
 </div>
