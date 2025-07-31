@@ -204,6 +204,10 @@
   <div class="kyc-upload" (click)="openUploadDialog()">
     <button>+</button>
   </div>
+  <div class="uploaded-indicator" *ngIf="form.get('kycDocument')?.value">
+    <mat-icon>picture_as_pdf</mat-icon>
+    <span>{{ form.get("kycDocument")?.value?.file?.name }} Uploaded</span>
+  </div>
   <mat-error
     *ngIf="
       form.get('kycDocument')?.hasError('required') &&

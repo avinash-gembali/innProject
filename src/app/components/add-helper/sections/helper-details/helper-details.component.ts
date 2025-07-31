@@ -48,7 +48,10 @@ export class HelperDetailsComponent {
     vehicleNumber: new FormControl(''),
     photo: new FormControl<File | null>(null),
     photoPreview: new FormControl<string | ArrayBuffer | null>(null),
-    kycDocument: new FormControl<File | null>(null, Validators.required),
+    kycDocument: new FormControl<{ category: string; file: File } | null>(
+      null,
+      Validators.required
+    ),
   });
 
   services = [
@@ -138,10 +141,10 @@ export class HelperDetailsComponent {
   }
 
   isFormValid(): boolean {
-    // if (this.form.invalid) {
-    //   this.form.markAllAsTouched();
-    //   return false;
-    // }
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return false;
+    }
     return true;
   }
 }

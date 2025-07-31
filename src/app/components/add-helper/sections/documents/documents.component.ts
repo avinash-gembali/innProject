@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AdditionalDialogComponent } from '../additional-dialog/additional-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
   FormGroup,
@@ -11,14 +13,17 @@ import {
 @Component({
   selector: 'app-documents',
   standalone: true,
-  imports: [],
+  imports: [MatIconModule, CommonModule],
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.scss',
 })
 export class DocumentsComponent {
   constructor(public dialog: MatDialog) {}
   form = new FormGroup({
-    additionalDocument: new FormControl<File | null>(null),
+    additionalDocument: new FormControl<{
+      category: string;
+      file: File;
+    } | null>(null),
   });
   openUploadDialog(): void {
     const dialogRef = this.dialog.open(AdditionalDialogComponent, {

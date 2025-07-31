@@ -4,3 +4,7 @@
 <div class="doc-upload" (click)="openUploadDialog()">
   <button>+</button>
 </div>
+<div class="uploaded-indicator" *ngIf="form.get('additionalDocument')?.value">
+  <mat-icon>picture_as_pdf</mat-icon>
+  <span>{{ form.get("additionalDocument")?.value?.file?.name }} Uploaded</span>
+</div>
