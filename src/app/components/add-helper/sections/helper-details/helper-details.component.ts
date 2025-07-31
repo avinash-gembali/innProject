@@ -1,14 +1,19 @@
 import { Component } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
-import { UploadDialogComponent } from '../upload-dialog/upload-dialog.component';
+import {
+  ReactiveFormsModule,
+  FormGroup,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { UploadDialogComponent } from '../upload-dialog/upload-dialog.component';
 
 @Component({
   selector: 'app-helper-details',
@@ -27,20 +32,25 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrl: './helper-details.component.scss',
 })
 export class HelperDetailsComponent {
-
   constructor(public dialog: MatDialog) {}
+  form = new FormGroup({
+    service: new FormControl(null, Validators.required),
+    organization: new FormControl(null, Validators.required),
+    fullName: new FormControl('', Validators.required),
+    languages: new FormControl<string[]>([], Validators.required),
+    gender: new FormControl('', Validators.required),
+    phone: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^[0-9]{10}$/),
+    ]),
+    email: new FormControl('', Validators.email),
+    vehicle: new FormControl('none'),
+    vehicleNumber: new FormControl(''),
+    photo: new FormControl<File | null>(null),
+    photoPreview: new FormControl<string | ArrayBuffer | null>(null),
+    kycDocument: new FormControl<File | null>(null, Validators.required),
+  });
 
-  selectedFile: File | null = null;
-
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-      console.log('File stored:', this.selectedFile.name);
-      // You can now upload this.selectedFile to a server or preview it
-    }
-  }
-  serviceControl = new FormControl();
   services = [
     { name: 'Maid', icon: 'cleaning_services' },
     { name: 'Cook', icon: 'restaurant' },
@@ -48,24 +58,56 @@ export class HelperDetailsComponent {
     { name: 'Nurse', icon: 'medical_services' },
   ];
 
-  organizationControl = new FormControl();
   organizations = ['ASBL', 'Spring Helpers'];
 
-  languageControl = new FormControl<string[]>([]);
   languages: string[] = ['Hindi', 'English', 'Telugu'];
 
-  toggleSelectAll() {
-    if (this.isAllSelected()) {
-      // Deselect all
-      this.languageControl.setValue([]);
-    } else {
-      // Select all languages
-      this.languageControl.setValue([...this.languages]);
+  vehicles = ['none', 'Bike', 'Car', 'Auto'];
+
+  selectedImageUrl: string | ArrayBuffer | null = null;
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64Image = reader.result;
+
+        // Patch both file and base64 into the form
+        this.form.patchValue({
+          photo: file,
+          photoPreview: base64Image, // custom control to store preview
+        });
+
+        // Also assign to show in this component immediately
+        this.selectedImageUrl = base64Image;
+      };
+      reader.readAsDataURL(file);
     }
   }
 
+  toggleSelectAll() {
+    const current = this.form.get('languages')?.value || [];
+    if (this.isAllSelected()) {
+      this.form.get('languages')?.setValue([]);
+    } else {
+      this.form.get('languages')?.setValue([...this.languages]);
+    }
+  }
+
+  isAllSelected(): boolean {
+    const selected = this.form.get('languages')?.value || [];
+    return (
+      this.languages.length > 0 &&
+      this.languages.every((lang) => selected.includes(lang))
+    );
+  }
+
   getSelectedLanguagesDisplay(): string {
-    const selected = this.languageControl.value || [];
+    const selected = this.form.get('languages')?.value || [];
 
     if (selected.length === 0) return 'Select languages';
     if (selected.length === 1) return selected[0];
@@ -73,30 +115,33 @@ export class HelperDetailsComponent {
     return `${selected[0]} +${selected.length - 1} more`;
   }
 
-  isAllSelected(): boolean {
-    const selected = this.languageControl.value || [];
-    return (
-      this.languages.length > 0 &&
-      this.languages.every((lang) => selected.includes(lang))
-    );
-  }
-  vehicleControl = new FormControl();
-  vehicles = ['none', 'Bike', 'Car', 'Auto'];
   get showPhoneField(): boolean {
-    return this.vehicleControl.value && this.vehicleControl.value !== 'none';
+    const value = this.form.get('vehicle')?.value;
+    return value !== 'none';
   }
 
   openUploadDialog(): void {
     const dialogRef = this.dialog.open(UploadDialogComponent, {
-      width: '500px', // Adjust width as needed
+      width: '500px',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        this.form.patchValue({ kycDocument: result });
         console.log('Dialog result:', result);
-        // Handle the selected category and file here (e.g., upload the file)
       }
     });
   }
 
+  getFormData(): any {
+    return this.form.value;
+  }
+
+  isFormValid(): boolean {
+    // if (this.form.invalid) {
+    //   this.form.markAllAsTouched();
+    //   return false;
+    // }
+    return true;
+  }
 }

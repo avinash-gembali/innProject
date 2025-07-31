@@ -37,9 +37,10 @@
 
     <!-- Content Section -->
     <div class="form-section">
-      <app-helper-details *ngIf="currentStep === 0"></app-helper-details>
-      <app-documents *ngIf="currentStep === 1"></app-documents>
-      <app-review *ngIf="currentStep === 2"></app-review>
+      <app-helper-details *ngIf="currentStep === 0" #helperDetails ></app-helper-details>
+      <app-documents *ngIf="currentStep === 1" #documentDetails ></app-documents>
+      <app-review *ngIf="currentStep === 2" [helperData]="helperFormData"
+  [documentData]="documentFormData" ></app-review>
 
       <div class="buttons">
         <button class="btn" (click)="prevStep()" [disabled]="currentStep === 0">Back</button>

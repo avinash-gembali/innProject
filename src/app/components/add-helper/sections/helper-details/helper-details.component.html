@@ -1,120 +1,215 @@
 <h1>Helper Details</h1>
 <p>Track, Add & Manage all your helpers at one place</p>
 
-<!-- Upload Photo -->
-<div class="upload" (click)="fileInput.click()">
-  <mat-icon>cloud_upload</mat-icon>
-  <button mat-button>Upload Photo</button>
-  <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
-</div>
-<p>Upload Photo (.png, .jpeg) size 5mb</p>
+<form [formGroup]="form">
+  <!-- Upload Photo -->
+  <div (click)="fileInput.click()">
+    <!-- BEFORE Upload -->
+    <div class="upload" *ngIf="!selectedImageUrl">
+      <mat-icon>cloud_upload</mat-icon>
+      <button mat-button type="button">Upload Photo</button>
+    </div>
 
-<!-- Type of Service -->
-<label for="service">Type of service <span>*</span></label>
-<mat-form-field appearance="outline" class="full-width" floatLabel="always">
-  <mat-select
-    id="service"
-    [formControl]="serviceControl"
-    placeholder="Type of service"
-  >
-    <mat-option *ngFor="let service of services" [value]="service.name">
-      <mat-icon class="option-icon">{{ service.icon }}</mat-icon>
-      {{ service.name }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+    <!-- AFTER Upload -->
+    <div class="uploaded-image" *ngIf="selectedImageUrl">
+      <img [src]="selectedImageUrl" alt="Uploaded photo" />
+    </div>
 
-<!-- Organization -->
-<label for="organization">Organization Name <span>*</span></label>
-<mat-form-field appearance="outline" class="full-width" floatLabel="always">
-  <mat-select
-    id="organization"
-    [formControl]="organizationControl"
-    placeholder="Organization Name"
-  >
-    <mat-option
-      *ngFor="let organization of organizations"
-      [value]="organization"
+    <input
+      type="file"
+      #fileInput
+      accept=".png,.jpeg,.jpg"
+      hidden
+      (change)="onFileSelected($event)"
+    />
+  </div>
+
+  <p>Upload Photo (.png, .jpeg) size 5mb</p>
+
+  <!-- Type of Service -->
+  <label for="service">Type of service <span>*</span></label>
+  <mat-form-field appearance="outline" class="full-width" floatLabel="always">
+    <mat-select
+      id="service"
+      formControlName="service"
+      placeholder="Type of service"
     >
-      {{ organization }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-
-<!-- Full Name -->
-<label for="name">Full Name <span>*</span></label>
-<input type="text" id="name" placeholder="Full Name" class="full-width" />
-
-<label for="languages">Languages <span>*</span></label>
-<mat-form-field appearance="outline" class="full-width" floatLabel="always">
-  <mat-select
-    id="languages"
-    [formControl]="languageControl"
-    multiple
-    placeholder="Select languages"
+      <mat-option *ngFor="let service of services" [value]="service.name">
+        <mat-icon class="option-icon">{{ service.icon }}</mat-icon>
+        {{ service.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-error
+    *ngIf="
+      form.get('service')?.hasError('required') && form.get('service')?.touched
+    "
   >
-    <mat-select-trigger>
-      {{ getSelectedLanguagesDisplay() }}
-    </mat-select-trigger>
-    <!-- "Select All" should not be part of value list -->
-    <mat-option
-      (click)="toggleSelectAll(); $event.stopPropagation()"
-      [value]="null"
+    Type of service is required
+  </mat-error>
+
+  <!-- Organization -->
+  <label for="organization">Organization Name <span>*</span></label>
+  <mat-form-field appearance="outline" class="full-width" floatLabel="always">
+    <mat-select
+      id="organization"
+      formControlName="organization"
+      placeholder="Organization Name"
     >
-      Select All
-    </mat-option>
+      <mat-option
+        *ngFor="let organization of organizations"
+        [value]="organization"
+      >
+        {{ organization }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-error
+    *ngIf="
+      form.get('organization')?.hasError('required') &&
+      form.get('organization')?.touched
+    "
+  >
+    Organization name is required
+  </mat-error>
 
-    <mat-option *ngFor="let lang of languages" [value]="lang">
-      {{ lang }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-
-<!-- Gender -->
-
-<label for="gender">Gender <span>*</span></label>
-<mat-radio-group>
-  <mat-radio-button value="male" color="primary">Male</mat-radio-button>
-  <mat-radio-button value="female" color="primary">Female</mat-radio-button>
-  <mat-radio-button value="other" color="primary">Other</mat-radio-button>
-</mat-radio-group>
-
-<!-- Phone Number -->
-<label for="phone">Phone Number <span>*</span></label>
-<div class="phone-wrapper">
-  <div class="country-code">+91 <mat-icon>keyboard_arrow_down</mat-icon></div>
+  <!-- Full Name -->
+  <label for="name">Full Name <span>*</span></label>
   <input
     type="text"
-    id="phone"
-    placeholder="Phone Number"
-    class="phone-input"
+    id="name"
+    formControlName="fullName"
+    placeholder="Full Name"
+    class="full-width"
   />
-</div>
+  <mat-error
+    *ngIf="
+      form.get('fullName')?.hasError('required') &&
+      form.get('fullName')?.touched
+    "
+  >
+    Full name is required
+  </mat-error>
 
-<!-- Email -->
-<label for="email">Email</label>
-<input type="email" id="email" placeholder="Email" class="full-width" />
+  <!-- Languages -->
+  <label for="languages">Languages <span>*</span></label>
+  <mat-form-field appearance="outline" class="full-width" floatLabel="always">
+    <mat-select
+      id="languages"
+      formControlName="languages"
+      multiple
+      placeholder="Select languages"
+    >
+      <mat-select-trigger>
+        {{ getSelectedLanguagesDisplay() }}
+      </mat-select-trigger>
+      <mat-option
+        (click)="toggleSelectAll(); $event.stopPropagation()"
+        [value]="null"
+      >
+        Select All
+      </mat-option>
+      <mat-option *ngFor="let lang of languages" [value]="lang">
+        {{ lang }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-error
+    *ngIf="
+      form.get('languages')?.hasError('required') &&
+      form.get('languages')?.touched
+    "
+  >
+    At least one language must be selected
+  </mat-error>
 
-<!-- Vehicle -->
-<label for="vehicle">Choose vehicle type</label>
-<mat-form-field appearance="outline" class="full-width" floatLabel="always">
-  <mat-select id="vehicle" [formControl]="vehicleControl" placeholder="None">
-    <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle">
-      {{ vehicle }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+  <!-- Gender -->
+  <label for="gender">Gender <span>*</span></label>
+  <mat-radio-group formControlName="gender">
+    <mat-radio-button value="male" color="primary">Male</mat-radio-button>
+    <mat-radio-button value="female" color="primary">Female</mat-radio-button>
+    <mat-radio-button value="other" color="primary">Other</mat-radio-button>
+  </mat-radio-group>
+  <mat-error
+    *ngIf="
+      form.get('gender')?.hasError('required') && form.get('gender')?.touched
+    "
+  >
+    Gender is required
+  </mat-error>
 
-<!-- Vehicle Number (Conditional) -->
-<div *ngIf="showPhoneField" style="margin-top: 16px">
-  <label for="vehicleNumber">Vehicle Number <span>*</span></label>
-  <div class="vehicle-wrapper">
-    <input type="text" id="vehicleNumber" placeholder="Vehicle Number" />
+  <!-- Phone Number -->
+  <label for="phone">Phone Number <span>*</span></label>
+  <div class="phone-wrapper">
+    <div class="country-code">+91 <mat-icon>keyboard_arrow_down</mat-icon></div>
+    <input
+      type="text"
+      id="phone"
+      placeholder="Phone Number"
+      formControlName="phone"
+      class="phone-input"
+    />
   </div>
-</div>
+  <mat-error
+    *ngIf="
+      form.get('phone')?.hasError('required') && form.get('phone')?.touched
+    "
+  >
+    Phone number is required
+  </mat-error>
 
-<!-- KYC Upload -->
-<label for="document">KYC Document <span>*</span></label>
-<div class="kyc-upload" (click)="openUploadDialog()">
-  <button>+</button>
-</div>
+  <!-- Email -->
+  <label for="email">Email</label>
+  <input
+    type="email"
+    id="email"
+    placeholder="Email"
+    formControlName="email"
+    class="full-width"
+  />
+
+  <!-- Vehicle -->
+  <label for="vehicle">Choose vehicle type</label>
+  <mat-form-field appearance="outline" class="full-width" floatLabel="always">
+    <mat-select formControlName="vehicle" id="vehicle" placeholder="None">
+      <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle">
+        {{ vehicle }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Vehicle Number (Conditional) -->
+  <div *ngIf="showPhoneField" style="margin-top: 16px">
+    <label for="vehicleNumber">Vehicle Number <span>*</span></label>
+    <div class="vehicle-wrapper">
+      <input
+        formControlName="vehicleNumber"
+        type="text"
+        id="vehicleNumber"
+        placeholder="Vehicle Number"
+      />
+    </div>
+  </div>
+  <mat-error
+    *ngIf="
+      form.get('vehicleNumber')?.hasError('required') &&
+      form.get('vehicleNumber')?.touched
+    "
+  >
+    Vehicle number is required
+  </mat-error>
+
+  <!-- KYC Upload -->
+  <label for="document">KYC Document <span>*</span></label>
+  <div class="kyc-upload" (click)="openUploadDialog()">
+    <button>+</button>
+  </div>
+  <mat-error
+    *ngIf="
+      form.get('kycDocument')?.hasError('required') &&
+      form.get('kycDocument')?.touched
+    "
+  >
+    KYC document is required
+  </mat-error>
+</form>
