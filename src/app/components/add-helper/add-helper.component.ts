@@ -8,6 +8,9 @@ import { ViewChild } from '@angular/core';
 import { HelperService } from '../../shared/helper.service';
 import { Router } from '@angular/router';
 import { Helper } from '../../shared/helper';
+import { AddedDialogComponent } from './added-dialog/added-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { HelperQrComponent } from './helper-qr/helper-qr.component';
 
 @Component({
   selector: 'app-add-helper',
@@ -24,7 +27,11 @@ import { Helper } from '../../shared/helper';
   styleUrl: './add-helper.component.scss',
 })
 export class AddHelperComponent {
-  constructor(private helperService: HelperService, private router: Router) {}
+  constructor(
+    private dialog: MatDialog,
+    private helperService: HelperService,
+    private router: Router
+  ) {}
 
   @ViewChild('helperDetails') helperDetailsComponent!: HelperDetailsComponent;
   @ViewChild('documentDetails') documentDetailsComponent!: DocumentsComponent;
@@ -78,6 +85,21 @@ export class AddHelperComponent {
       };
       this.helperService.addHelper(newHelper);
       console.log('Helper temporarily added:', newHelper);
+
+      const dialogRef = this.dialog.open(AddedDialogComponent, {
+        height : '300px',
+        width: '500px',
+        data: { name: newHelper.name },
+      });
+
+      dialogRef.afterClosed().subscribe(() => {
+        this.dialog.open(HelperQrComponent, {
+          height : '500px',
+          width : '500px',
+          data: newHelper,
+        });
+      });
+
       // Optionally navigate back or reset the form
       this.router.navigate(['/helpers', 1]);
       return;
