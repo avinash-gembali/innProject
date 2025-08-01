@@ -6,45 +6,56 @@
 
   <div class="body">
     <!-- Stepper Section -->
-     <div class="sidebarContainer">
-    <div class="sideBar">
-      <div class="stepper-wrapper">
-        <!-- Vertical Line -->
-        <div class="vertical-line">
-          <div
-            class="line-fill"
-            [style.height.%]="(currentStep / (steps.length - 1)) * 100"
-          ></div>
-        </div>
+    <div class="sidebarContainer">
+      <div class="sideBar">
+        <div class="stepper-wrapper">
+          <!-- Vertical Line -->
+          <div class="vertical-line">
+            <div
+              class="line-fill"
+              [style.height.%]="(currentStep / (steps.length - 1)) * 100"
+            ></div>
+          </div>
 
-        <!-- Dots + Labels -->
-        <div
-          class="step"
-          *ngFor="let step of steps; let i = index"
-          [class.active]="i === currentStep"
-          [class.completed]="i < currentStep"
-          [style.top.%]="(i / (steps.length - 1)) * 100"
-        >
-          <div class="dot"></div>
-          <div class="label">
-            <div class="title">{{ step.title }}</div>
-            <p>{{ step.description }}</p>
+          <!-- Dots + Labels -->
+          <div
+            class="step"
+            *ngFor="let step of steps; let i = index"
+            [class.active]="i === currentStep"
+            [class.completed]="i < currentStep"
+            [style.top.%]="(i / (steps.length - 1)) * 100"
+          >
+            <div class="dot"></div>
+            <div class="label">
+              <div class="title">{{ step.title }}</div>
+              <p>{{ step.description }}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    </div>
 
     <!-- Content Section -->
     <div class="form-section">
-      <app-helper-details *ngIf="currentStep === 0" #helperDetails ></app-helper-details>
-      <app-documents *ngIf="currentStep === 1" #documentDetails ></app-documents>
-      <app-review *ngIf="currentStep === 2" [helperData]="helperFormData"
-  [documentData]="documentFormData" ></app-review>
+      <app-helper-details
+        *ngIf="currentStep === 0"
+        #helperDetails
+      ></app-helper-details>
+      <app-documents *ngIf="currentStep === 1" #documentDetails></app-documents>
+      <app-review
+        *ngIf="currentStep === 2"
+        [helperData]="helperFormData"
+        [documentData]="documentFormData"
+      ></app-review>
 
       <div class="buttons">
-        <button class="btn" (click)="prevStep()" [disabled]="currentStep === 0">Back</button>
-        <button class="btn" (click)="nextStep()" [disabled]="currentStep === steps.length - 1">Next</button>
+        <button class="btn" (click)="prevStep()" [disabled]="currentStep === 0">
+          Back
+        </button>
+
+        <button class="btn" (click)="nextStep()">
+          {{ currentStep === steps.length - 1 ? "Submit" : "Next" }}
+        </button>
       </div>
     </div>
   </div>

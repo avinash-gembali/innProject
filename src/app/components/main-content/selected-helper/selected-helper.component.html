@@ -3,7 +3,18 @@
   <div class="selected-user-details">
     <div class="header">
       <div class="left">
-        <img [src]="selectedHelper.imageUrl" class="selected-img" />
+        <div
+          class="selected-img"
+          *ngIf="selectedHelper.imageUrl; else showInitials"
+        >
+          <img [src]="selectedHelper.imageUrl" alt="Profile Image" />
+        </div>
+
+        <ng-template #showInitials>
+          <div class="initials-img">
+            {{ getInitials(selectedHelper.name) }}
+          </div>
+        </ng-template>
         <div>
           <h2>{{ selectedHelper.name }}</h2>
           <p>{{ selectedHelper.role }}</p>

@@ -5,6 +5,9 @@ import { HelperDetailsComponent } from './sections/helper-details/helper-details
 import { ReviewComponent } from './sections/review/review.component';
 import { NgIf, NgFor } from '@angular/common';
 import { ViewChild } from '@angular/core';
+import { HelperService } from '../../shared/helper.service';
+import { Router } from '@angular/router';
+import { Helper } from '../../shared/helper';
 
 @Component({
   selector: 'app-add-helper',
@@ -21,6 +24,8 @@ import { ViewChild } from '@angular/core';
   styleUrl: './add-helper.component.scss',
 })
 export class AddHelperComponent {
+  constructor(private helperService: HelperService, private router: Router) {}
+
   @ViewChild('helperDetails') helperDetailsComponent!: HelperDetailsComponent;
   @ViewChild('documentDetails') documentDetailsComponent!: DocumentsComponent;
   helperFormData: any = null;
@@ -53,6 +58,29 @@ export class AddHelperComponent {
       }
       this.documentFormData = this.documentDetailsComponent.getFormData();
       console.log('Document Form Data :', this.documentFormData);
+    }
+
+    if (this.currentStep === 2) {
+      const form = this.helperFormData;
+      const newHelper: Helper = {
+        id: Date.now(), // or use UUID, etc.
+        name: form.fullName || '-',
+        role: form.service || '-',
+        imageUrl: form.photoPreview || '', // base64 if uploaded
+        employeeCode: '-', // TODO: generate dynamically or assign manually
+        gender: form.gender || '-',
+        languages: form.languages || [],
+        mobileNo: form.phone || '-',
+        emailId: form.email || '-',
+        type: form.service || '-',
+        organization: form.organization || '-',
+        joinedOn: new Date().toISOString().split('T')[0], // 'YYYY-MM-DD'
+      };
+      this.helperService.addHelper(newHelper);
+      console.log('Helper temporarily added:', newHelper);
+      // Optionally navigate back or reset the form
+      this.router.navigate(['/helpers', 1]);
+      return;
     }
 
     if (this.currentStep < this.steps.length - 1) {

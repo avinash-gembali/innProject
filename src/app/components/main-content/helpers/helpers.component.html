@@ -7,7 +7,20 @@
       [class.active]="selectedHelper?.id === helper.id"
       (click)="selectHelper(helper)"
     >
-      <img [src]="helper.imageUrl" alt="{{ helper.name }}" class="profile-img" />
+      <div class="profile-img-wrapper">
+        <ng-container *ngIf="helper.imageUrl; else showInitials">
+          <img
+            [src]="helper.imageUrl"
+            alt="{{ helper.name }}"
+            class="profile-img"
+          />
+        </ng-container>
+        <ng-template #showInitials>
+          <div class="profile-initials">
+            {{ getInitials(helper.name) }}
+          </div>
+        </ng-template>
+      </div>
       <div class="profile-details">
         <h3>{{ helper.name }}</h3>
         <p>{{ helper.role }}</p>
