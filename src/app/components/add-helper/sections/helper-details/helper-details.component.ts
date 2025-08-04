@@ -118,7 +118,7 @@ export class HelperDetailsComponent {
     return `${selected[0]} +${selected.length - 1} more`;
   }
 
-  get showPhoneField(): boolean {
+  get showVehicleField(): boolean {
     const value = this.form.get('vehicle')?.value;
     return value !== 'none';
   }

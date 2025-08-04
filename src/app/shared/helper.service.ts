@@ -9,8 +9,6 @@ import { Observable } from 'rxjs';
 export class HelperService {
   constructor(private http: HttpClient) {}
 
-  private helpers: Helper[] = [];
-
   getHelpers(): Observable<Helper[]> {
     return this.http.get<Helper[]>('http://localhost:3000/api/helpers');
   }

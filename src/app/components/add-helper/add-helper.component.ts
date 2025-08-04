@@ -1,4 +1,4 @@
-import { Component, viewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { DocumentsComponent } from './sections/documents/documents.component';
 import { HelperDetailsComponent } from './sections/helper-details/helper-details.component';
