@@ -26,13 +26,39 @@ export class HelpersComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadHelpers();
-    // Get ID from route param and load the correct helper
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.selectedHelper = this.helpers[0];
+  }
+
+  onHelperDeleted() {
+    this.helperService.getHelpers().subscribe((data) => {
+      this.helpers = data;
+
+      if (this.helpers.length > 0) {
+        // Auto-select the first available helper
+        this.selectedHelper = this.helpers[0];
+        this.router.navigate(['/helpers', this.selectedHelper.id]);
+      } else {
+        // No helpers left
+        this.selectedHelper = undefined;
+        this.router.navigate(['/helpers']);
+      }
+    });
   }
 
   loadHelpers() {
-    this.helpers = this.helperService.getHelpers();
+    this.helperService.getHelpers().subscribe((data) => {
+      this.helpers = data;
+
+      // Optional: auto-select first helper if route ID is missing
+      const idFromRoute = Number(this.route.snapshot.paramMap.get('id'));
+      if (idFromRoute) {
+        const match = this.helpers.find((h) => h.id === idFromRoute);
+        if (match) {
+          this.selectedHelper = match;
+        }
+      } else {
+        this.selectedHelper = this.helpers[0];
+      }
+    });
   }
 
   selectHelper(helper: Helper) {

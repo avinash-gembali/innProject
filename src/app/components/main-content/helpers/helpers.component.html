@@ -33,6 +33,7 @@
       <app-selected-helper
         *ngIf="selectedHelper"
         [selectedHelper]="selectedHelper"
+        (helperDeleted)="onHelperDeleted()"
       ></app-selected-helper>
     </div>
   </div>

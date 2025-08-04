@@ -7,7 +7,6 @@ import {
   ReactiveFormsModule,
   FormGroup,
   FormControl,
-  Validators,
 } from '@angular/forms';
 
 @Component({
@@ -43,6 +42,10 @@ export class DocumentsComponent {
     return this.form.value;
   }
 
+  removeDocument(): void {
+  this.form.patchValue({ additionalDocument: null });
+}
+
   isFormValid(): boolean {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -50,4 +53,5 @@ export class DocumentsComponent {
     }
     return true;
   }
+
 }

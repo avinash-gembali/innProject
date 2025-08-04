@@ -7,4 +7,6 @@
 <div class="uploaded-indicator" *ngIf="form.get('additionalDocument')?.value">
   <mat-icon>picture_as_pdf</mat-icon>
   <span>{{ form.get("additionalDocument")?.value?.file?.name }} Uploaded</span>
+  <button (click)="removeDocument()">Remove</button>
+  <button (click)="openUploadDialog()">Change</button>
 </div>

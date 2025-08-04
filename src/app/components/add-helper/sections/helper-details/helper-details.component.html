@@ -207,6 +207,22 @@
   <div class="uploaded-indicator" *ngIf="form.get('kycDocument')?.value">
     <mat-icon>picture_as_pdf</mat-icon>
     <span>{{ form.get("kycDocument")?.value?.file?.name }} Uploaded</span>
+    <button
+      type="button"
+      mat-stroked-button
+      color="primary"
+      (click)="changeKycDocument()"
+    >
+      Change
+    </button>
+    <button
+      type="button"
+      mat-stroked-button
+      color="warn"
+      (click)="removeKycDocument()"
+    >
+      Remove
+    </button>
   </div>
   <mat-error
     *ngIf="

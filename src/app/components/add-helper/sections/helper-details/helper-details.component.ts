@@ -147,4 +147,12 @@ export class HelperDetailsComponent {
     }
     return true;
   }
+
+  changeKycDocument(): void {
+    this.openUploadDialog(); // Reuse same dialog for changing
+  }
+
+  removeKycDocument(): void {
+    this.form.patchValue({ kycDocument: null });
+  }
 }

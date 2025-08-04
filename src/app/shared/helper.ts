@@ -11,4 +11,12 @@ export interface Helper {
   type: string;
   organization: string;
   joinedOn: string;
+  kycDocument?: {
+    category: string;
+    fileName: string; // this should match what's stored in backend
+  };
+  additionalDocument?: {
+    category: string;
+    fileName: string; // store only name or base64 or URL
+  };
 }

@@ -21,8 +21,8 @@
         </div>
       </div>
       <div class="right">
-        <button mat-icon-button><mat-icon>edit</mat-icon></button>
-        <button mat-icon-button color="warn">
+        <button mat-icon-button (click)="editHelper()"><mat-icon>edit</mat-icon></button>
+        <button mat-icon-button color="warn" (click)="deleteHelper()">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
@@ -33,7 +33,9 @@
 
       <div class="field">
         <label>Identification Card</label>
-        <div class="view-button"><mat-icon>visibility</mat-icon> View</div>
+        <div class="view-button" (click)="openQr()">
+          <mat-icon>visibility</mat-icon> View
+        </div>
       </div>
 
       <div class="field">
