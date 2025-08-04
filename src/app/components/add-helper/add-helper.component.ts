@@ -11,6 +11,8 @@ import { Helper } from '../../shared/helper';
 import { AddedDialogComponent } from './added-dialog/added-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { HelperQrComponent } from './helper-qr/helper-qr.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { LoadingService } from '../../shared/loading.service';
 
 @Component({
   selector: 'app-add-helper',
@@ -22,6 +24,7 @@ import { HelperQrComponent } from './helper-qr/helper-qr.component';
     ReviewComponent,
     NgIf,
     NgFor,
+    MatProgressBarModule,
   ],
   templateUrl: './add-helper.component.html',
   styleUrl: './add-helper.component.scss',
@@ -30,13 +33,17 @@ export class AddHelperComponent {
   constructor(
     private dialog: MatDialog,
     private helperService: HelperService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private loadingService: LoadingService,
+  ) {
+      
+  }
 
   @ViewChild('helperDetails') helperDetailsComponent!: HelperDetailsComponent;
   @ViewChild('documentDetails') documentDetailsComponent!: DocumentsComponent;
   helperFormData: any = null;
   documentFormData: any = null;
+
 
   steps = [
     { title: 'HelperDetails', description: 'Add Helper Details' },
@@ -70,63 +77,84 @@ export class AddHelperComponent {
     if (this.currentStep === 2) {
       const form = this.helperFormData;
       const doc = this.documentFormData;
-      this.helperService.getHelpers().subscribe((helpers) => {
-        const newId = helpers.length
-          ? Math.max(...helpers.map((h) => h.id)) + 1
-          : 1;
-        const newHelper: Helper = {
-          id: newId,
-          name: form.fullName || '-',
-          role: form.service || '-',
-          imageUrl: form.photoPreview || '', // base64 if uploaded
-          employeeCode: 'EMP' + newId.toString().padStart(4, '0'),
-          gender: form.gender || '-',
-          languages: form.languages || [],
-          mobileNo: form.phone || '-',
-          emailId: form.email || '-',
-          type: form.service || '-',
-          organization: form.organization || '-',
-          joinedOn: new Date().toISOString().split('T')[0], // 'YYYY-MM-DD'
-          additionalDocument: doc?.additionalDocument
-            ? {
-                category: doc.additionalDocument.category,
-                fileName: doc.additionalDocument.file.name,
-              }
-            : undefined,
 
-          kycDocument: form?.kycDocument
-            ? {
-                category: form.kycDocument.category,
-                fileName: form.kycDocument.file.name,
-              }
-            : undefined,
-        };
-        this.helperService.addHelper(newHelper).subscribe({
-          next: (savedHelper) => {
-            console.log('Helper saved to backend:', savedHelper);
+      const imageFile = form.photo;
+      this.loadingService.show();
 
-            const dialogRef = this.dialog.open(AddedDialogComponent, {
-              height: '300px',
-              width: '500px',
-              data: { name: savedHelper.name },
-            });
+      const createAndSaveHelper = (imageUrl: string) => {
+        this.helperService.getHelpers().subscribe((helpers) => {
+          const newId = helpers.length
+            ? Math.max(...helpers.map((h) => h.id)) + 1
+            : 1;
 
-            dialogRef.afterClosed().subscribe(() => {
-              this.dialog.open(HelperQrComponent, {
-                height: '500px',
+          const newHelper: Helper = {
+            id: newId,
+            name: form.fullName || '-',
+            role: form.service || '-',
+            imageUrl: imageUrl || '',
+            employeeCode: 'EMP' + newId.toString().padStart(4, '0'),
+            gender: form.gender || '-',
+            languages: form.languages || [],
+            mobileNo: form.phone || '-',
+            emailId: form.email || '-',
+            type: form.service || '-',
+            organization: form.organization || '-',
+            joinedOn: new Date().toISOString().split('T')[0],
+            additionalDocument: doc?.additionalDocument
+              ? {
+                  category: doc.additionalDocument.category,
+                  fileName: doc.additionalDocument.file.name,
+                }
+              : undefined,
+            kycDocument: form?.kycDocument
+              ? {
+                  category: form.kycDocument.category,
+                  fileName: form.kycDocument.file.name,
+                }
+              : undefined,
+          };
+
+          this.helperService.addHelper(newHelper).subscribe({
+            next: (savedHelper) => {
+              this.loadingService.hide();
+              const dialogRef = this.dialog.open(AddedDialogComponent, {
+                height: '300px',
                 width: '500px',
-                data: savedHelper,
+                data: { name: savedHelper.name },
               });
-            });
 
-            this.router.navigate(['/helpers', savedHelper.id]);
+              dialogRef.afterClosed().subscribe(() => {
+                this.dialog.open(HelperQrComponent, {
+                  height: '500px',
+                  width: '500px',
+                  data: savedHelper,
+                });
+              });
+
+              this.router.navigate(['/helpers', savedHelper.id]);
+            },
+            error: (err) => {
+              this.loadingService.hide(); 
+              console.error('Error saving helper:', err);
+            },
+          });
+        });
+      };
+
+      if (imageFile && imageFile instanceof File) {
+        // ✅ Only upload if file exists
+        this.helperService.uploadImage(imageFile).subscribe({
+          next: (response) => {
+            createAndSaveHelper(response.url);
           },
-          error: (err) => {
-            console.error('Error saving helper:', err);
+          error: (uploadErr) => {
+            this.loadingService.hide();
+            console.error('Image upload failed:', uploadErr);
           },
         });
-        return;
-      });
+      } else {
+        createAndSaveHelper('');
+      }
     }
 
     if (this.currentStep < this.steps.length - 1) {

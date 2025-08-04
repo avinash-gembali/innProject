@@ -27,6 +27,12 @@ export class HelperService {
     );
   }
 
+  uploadImage(file : File) : Observable<{ url : string }>{
+    const formData = new FormData();
+    formData.append('file',file);
+    return this.http.post<{url : string}>('http://localhost:3000/api/upload', formData);
+  }
+
   deleteHelper(id: number): Observable<any> {
     return this.http.delete(`http://localhost:3000/api/helpers/${id}`);
   }
