@@ -170,13 +170,13 @@ export class AddHelperComponent {
             additionalDocument: doc?.additionalDocument
               ? {
                   category: doc.additionalDocument.category,
-                  fileName: doc.additionalDocument.file.name,
+                  fileName: doc.additionalDocument.fileName,
                 }
               : undefined,
             kycDocument: form?.kycDocument
               ? {
                   category: form.kycDocument.category,
-                  fileName: form.kycDocument.file.name,
+                  fileName: form.kycDocument.fileName,
                 }
               : undefined,
           };
