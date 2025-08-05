@@ -41,7 +41,7 @@
         *ngIf="currentStep === 0"
         #helperDetails
       ></app-helper-details>
-      <app-documents *ngIf="currentStep === 1" #documentDetails></app-documents>
+      <app-documents *ngIf="currentStep === 1" [fileexistname]="additionalDocumentFileName" #documentDetails></app-documents>
       <app-review
         *ngIf="currentStep === 2"
         [helperData]="helperFormData"
@@ -53,7 +53,20 @@
           Back
         </button>
 
-        <button class="btn" (click)="nextStep()">
+        <button
+          class="btn"
+          *ngIf="isEditMode && currentStep === steps.length - 1"
+          (click)="submit()"
+        >
+          Submit
+        </button>
+
+        <!-- ✅ Otherwise, show Next -->
+        <button
+          class="btn"
+          *ngIf="!(isEditMode && currentStep === steps.length - 1)"
+          (click)="nextStep()"
+        >
           {{ currentStep === steps.length - 1 ? "Submit" : "Next" }}
         </button>
       </div>

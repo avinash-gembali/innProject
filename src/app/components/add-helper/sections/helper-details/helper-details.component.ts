@@ -34,8 +34,8 @@ import { UploadDialogComponent } from '../upload-dialog/upload-dialog.component'
 export class HelperDetailsComponent {
   constructor(public dialog: MatDialog) {}
   form = new FormGroup({
-    service: new FormControl(null, Validators.required),
-    organization: new FormControl(null, Validators.required),
+    service: new FormControl<string | null>(null, Validators.required),
+    organization: new FormControl<string | null>(null, Validators.required),
     fullName: new FormControl('', Validators.required),
     languages: new FormControl<string[]>([], Validators.required),
     gender: new FormControl('', Validators.required),
@@ -137,6 +137,8 @@ export class HelperDetailsComponent {
   }
 
   getFormData(): any {
+    console.log(this.form);
+    console.log(this.form.value);
     return this.form.value;
   }
 

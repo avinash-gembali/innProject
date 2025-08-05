@@ -8,15 +8,16 @@ export interface Helper {
   languages: string[];
   mobileNo: string;
   emailId: string;
-  type: string;
   organization: string;
   joinedOn: string;
+  vehicle?: string; // ✅ NEW
+  vehicleNumber?: string;
   kycDocument?: {
     category: string;
-    fileName: string; // this should match what's stored in backend
+    fileName: string;
   };
   additionalDocument?: {
     category: string;
-    fileName: string; // store only name or base64 or URL
+    fileName: string;
   };
 }

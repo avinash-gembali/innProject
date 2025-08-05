@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { HelperQrComponent } from './helper-qr/helper-qr.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { LoadingService } from '../../shared/loading.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-helper',
@@ -30,26 +31,91 @@ import { LoadingService } from '../../shared/loading.service';
   styleUrl: './add-helper.component.scss',
 })
 export class AddHelperComponent {
+  isEditMode = false;
+  editingHelperId!: number;
+  additionalDocumentFileName?: string;
+  additionalDocumentCategory?: string;
+  @ViewChild('helperDetails') helperDetailsComponent!: HelperDetailsComponent;
+
+  @ViewChild('documentDetails') documentDetailsComponent!: DocumentsComponent;
+
   constructor(
     private dialog: MatDialog,
     private helperService: HelperService,
     private router: Router,
     private loadingService: LoadingService,
+    private route: ActivatedRoute
   ) {
-      
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      if (id) {
+        this.isEditMode = true;
+        this.editingHelperId = +id;
+        this.setSteps();
+        this.loadHelperData(this.editingHelperId);
+      } else {
+        this.setSteps();
+      }
+    });
+  }
+  employeeCode = '';
+
+  loadHelperData(id: number) {
+    this.helperService.getHelperById(id).subscribe((helper) => {
+      // Step 1: Patch Helper Details
+      this.employeeCode = helper.employeeCode;
+      this.helperDetailsComponent?.form.patchValue({
+        service: helper.role,
+        organization: helper.organization,
+        fullName: helper.name,
+        languages: helper.languages,
+        gender: helper.gender,
+        phone: helper.mobileNo,
+        email: helper.emailId,
+        vehicle: helper.vehicle || 'none',
+        vehicleNumber: helper.vehicleNumber || '',
+        photoPreview: helper.imageUrl || null,
+        kycDocument: helper.kycDocument
+          ? {
+              category: helper.kycDocument.category,
+              file: new File([], helper.kycDocument.fileName),
+            }
+          : null,
+      });
+
+      this.helperDetailsComponent.selectedImageUrl = helper.imageUrl;
+
+      // Step 2: Patch Additional Document
+      // this.documentDetailsComponent?.form.patchValue({
+      //   additionalDocument: helper.additionalDocument
+      //     ? {
+      //         category: helper.additionalDocument.category,
+      //         file: new File([], helper.additionalDocument.fileName),
+      //       }
+      //     : null,
+      // });
+      this.additionalDocumentFileName = helper.additionalDocument?.fileName;
+      this.additionalDocumentCategory = helper.additionalDocument?.category;
+    });
   }
 
-  @ViewChild('helperDetails') helperDetailsComponent!: HelperDetailsComponent;
-  @ViewChild('documentDetails') documentDetailsComponent!: DocumentsComponent;
   helperFormData: any = null;
   documentFormData: any = null;
 
+  steps: { title: string; description: string }[] = [];
 
-  steps = [
-    { title: 'HelperDetails', description: 'Add Helper Details' },
-    { title: 'Documents', description: 'Upload Related Documents' },
-    { title: 'Review', description: 'Check the information and confirm' },
-  ];
+  private setSteps() {
+    this.steps = this.isEditMode
+      ? [
+          { title: 'HelperDetails', description: 'Edit Helper Details' },
+          { title: 'Documents', description: 'Edit Documents' },
+        ]
+      : [
+          { title: 'HelperDetails', description: 'Add Helper Details' },
+          { title: 'Documents', description: 'Upload Related Documents' },
+          { title: 'Review', description: 'Check the information and confirm' },
+        ];
+  }
 
   currentStep = 0;
 
@@ -62,7 +128,7 @@ export class AddHelperComponent {
       }
 
       this.helperFormData = this.helperDetailsComponent.getFormData();
-      console.log('Helper Form Data:', this.helperFormData);
+      console.log('Helper Form Data', this.helperFormData);
     }
 
     if (this.currentStep == 1) {
@@ -71,7 +137,7 @@ export class AddHelperComponent {
         return;
       }
       this.documentFormData = this.documentDetailsComponent.getFormData();
-      console.log('Document Form Data :', this.documentFormData);
+      console.log('Document Form Data', this.documentFormData);
     }
 
     if (this.currentStep === 2) {
@@ -96,8 +162,9 @@ export class AddHelperComponent {
             gender: form.gender || '-',
             languages: form.languages || [],
             mobileNo: form.phone || '-',
-            emailId: form.email || '-',
-            type: form.service || '-',
+            emailId: form.email || '',
+            vehicle: form.vehicle || 'none',
+            vehicleNumber: form.vehicleNumber || '',
             organization: form.organization || '-',
             joinedOn: new Date().toISOString().split('T')[0],
             additionalDocument: doc?.additionalDocument
@@ -134,7 +201,7 @@ export class AddHelperComponent {
               this.router.navigate(['/helpers', savedHelper.id]);
             },
             error: (err) => {
-              this.loadingService.hide(); 
+              this.loadingService.hide();
               console.error('Error saving helper:', err);
             },
           });
@@ -156,7 +223,6 @@ export class AddHelperComponent {
         createAndSaveHelper('');
       }
     }
-
     if (this.currentStep < this.steps.length - 1) {
       this.currentStep++;
     }
@@ -166,5 +232,37 @@ export class AddHelperComponent {
     if (this.currentStep > 0) {
       this.currentStep--;
     }
+    this.loadHelperData(this.editingHelperId);
+  }
+
+  submit() {
+    console.log(this.helperDetailsComponent);
+
+    if (!this.documentDetailsComponent?.isFormValid()) {
+      console.warn('Document form is invalid');
+      return;
+    }
+
+    const updatedHelper = {
+      id: this.editingHelperId,
+      employeeCode: this.employeeCode,
+      ...this.helperFormData,
+      ...this.documentFormData,
+    };
+
+    this.loadingService.show();
+    console.log(updatedHelper);
+    this.helperService
+      .updateHelper(this.editingHelperId, updatedHelper)
+      .subscribe({
+        next: (updated) => {
+          this.loadingService.hide();
+          this.router.navigate(['/helpers', this.editingHelperId]);
+        },
+        error: (err) => {
+          this.loadingService.hide();
+          console.error('Update failed:', err);
+        },
+      });
   }
 }

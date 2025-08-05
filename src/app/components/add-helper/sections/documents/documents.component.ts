@@ -8,7 +8,7 @@ import {
   FormGroup,
   FormControl,
 } from '@angular/forms';
-
+import { Input } from '@angular/core';
 @Component({
   selector: 'app-documents',
   standalone: true,
@@ -17,6 +17,7 @@ import {
   styleUrl: './documents.component.scss',
 })
 export class DocumentsComponent {
+  @Input() fileexistname:string | undefined ='';
   constructor(public dialog: MatDialog) {}
   form = new FormGroup({
     additionalDocument: new FormControl<{
