@@ -206,7 +206,7 @@
   </div>
   <div class="uploaded-indicator" *ngIf="form.get('kycDocument')?.value">
     <mat-icon>picture_as_pdf</mat-icon>
-    <span>{{ form.get("kycDocument")?.value?.file?.name }} Uploaded</span>
+    <span>{{ form.get("kycDocument")?.value?.fileName }} Uploaded</span>
     <button
       type="button"
       mat-stroked-button

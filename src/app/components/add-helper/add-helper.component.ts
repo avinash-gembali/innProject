@@ -78,7 +78,7 @@ export class AddHelperComponent {
         kycDocument: helper.kycDocument
           ? {
               category: helper.kycDocument.category,
-              file: new File([], helper.kycDocument.fileName),
+              fileName: helper.kycDocument.fileName,
             }
           : null,
       });
@@ -86,14 +86,14 @@ export class AddHelperComponent {
       this.helperDetailsComponent.selectedImageUrl = helper.imageUrl;
 
       // Step 2: Patch Additional Document
-      // this.documentDetailsComponent?.form.patchValue({
-      //   additionalDocument: helper.additionalDocument
-      //     ? {
-      //         category: helper.additionalDocument.category,
-      //         file: new File([], helper.additionalDocument.fileName),
-      //       }
-      //     : null,
-      // });
+      this.documentDetailsComponent?.form.patchValue({
+        additionalDocument: helper.additionalDocument
+          ? {
+              category: helper.additionalDocument.category,
+              fileName: helper.additionalDocument.fileName,
+            }
+          : null,
+      });
       this.additionalDocumentFileName = helper.additionalDocument?.fileName;
       this.additionalDocumentCategory = helper.additionalDocument?.category;
     });
@@ -243,19 +243,41 @@ export class AddHelperComponent {
       return;
     }
 
+    console.log(this.helperFormData);
+    const documentData = this.documentDetailsComponent.getFormData();
+    console.log(documentData);
+
     const updatedHelper = {
       id: this.editingHelperId,
       employeeCode: this.employeeCode,
       ...this.helperFormData,
-      ...this.documentFormData,
+      ...documentData,
     };
 
-    this.loadingService.show();
-    console.log(updatedHelper);
+    const photo = updatedHelper.photo;
+
+    if (photo) {
+      console.log('Uploading photo...');
+
+      this.helperService.uploadImage(photo).subscribe({
+        next: (response) => {
+          updatedHelper.photoPreview = response.url;
+          this.sendUpdate(updatedHelper);
+        },
+        error: (uploadErr) => {
+          this.loadingService.hide();
+          console.error('Image upload failed:', uploadErr);
+        },
+      });
+    } else {
+      this.sendUpdate(updatedHelper);
+    }
+  }
+  private sendUpdate(updatedHelper: any) {
     this.helperService
       .updateHelper(this.editingHelperId, updatedHelper)
       .subscribe({
-        next: (updated) => {
+        next: () => {
           this.loadingService.hide();
           this.router.navigate(['/helpers', this.editingHelperId]);
         },

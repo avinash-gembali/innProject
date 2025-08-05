@@ -48,7 +48,7 @@ export class HelperDetailsComponent {
     vehicleNumber: new FormControl(''),
     photo: new FormControl<File | null>(null),
     photoPreview: new FormControl<string | ArrayBuffer | null>(null),
-    kycDocument: new FormControl<{ category: string; file: File } | null>(
+    kycDocument: new FormControl<{ category: string; fileName: string } | null>(
       null,
       Validators.required
     ),
@@ -130,8 +130,12 @@ export class HelperDetailsComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.form.patchValue({ kycDocument: result });
-        console.log('Dialog result:', result);
+        const patchValue = {
+          category: result.category,
+          fileName: result.file?.name || '',
+        };
+        this.form.patchValue({ kycDocument: patchValue });
+        console.log('Dialog result:', patchValue);
       }
     });
   }

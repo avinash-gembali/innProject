@@ -22,7 +22,7 @@ export class DocumentsComponent {
   form = new FormGroup({
     additionalDocument: new FormControl<{
       category: string;
-      file: File;
+      fileName: string;
     } | null>(null),
   });
   openUploadDialog(): void {
@@ -32,7 +32,11 @@ export class DocumentsComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.form.patchValue({ additionalDocument: result });
+        const patchValue = {
+          category: result.category,
+          fileName: result.file?.name || '',
+        };
+        this.form.patchValue({ additionalDocument: patchValue });
         console.log('Dialog result:', result);
         // Handle the selected category and file here (e.g., upload the file)
       }
