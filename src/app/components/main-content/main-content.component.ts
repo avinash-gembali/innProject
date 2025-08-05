@@ -116,15 +116,6 @@ export class MainContentComponent implements OnInit {
     }
   }
 
-  // getSelectedLanguagesDisplay(): string {
-  //   const selected = this.form.get('languages')?.value || [];
-
-  //   if (selected.length === 0) return 'Select languages';
-  //   if (selected.length === 1) return selected[0];
-
-  //   return `${selected[0]} +${selected.length - 1} more`;
-  // }
-
   getSelectedServicesDisplay(): string {
     const selected = this.selectedServices || [];
     if (selected.length === 0) return 'Select Service';
