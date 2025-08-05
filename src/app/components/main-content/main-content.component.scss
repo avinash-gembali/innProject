@@ -147,3 +147,51 @@
     margin-top: 4px;
   }
 }
+
+::ng-deep .filter-menu {
+  padding: 0;
+  max-width: 280px;
+
+  .filter-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    h3.filter-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #444;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 8px;
+    }
+
+    .filter-field {
+      width: 100%;
+
+      ::ng-deep .mat-form-field-flex {
+        background-color: #f9f9f9;
+      }
+    }
+  }
+
+  .filter-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 16px;
+    border-top: 1px solid #e0e0e0;
+    background-color: #fafafa;
+  }
+
+  // Optional hover highlight for Select All
+  ::ng-deep .mat-option {
+    &.mat-selected {
+      background-color: #e3f2fd !important;
+    }
+
+    &:hover {
+      background-color: #f0f0f0 !important;
+    }
+  }
+}

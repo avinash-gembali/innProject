@@ -9,9 +9,10 @@ import { HelperService } from '../../shared/helper.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatPseudoCheckboxModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-main-content',
@@ -25,7 +26,9 @@ import { MatOptionModule } from '@angular/material/core';
     CommonModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatOptionModule
+    MatOptionModule,
+    MatCheckboxModule,
+    MatPseudoCheckboxModule,
   ],
   templateUrl: './main-content.component.html',
   styleUrl: './main-content.component.scss',
@@ -41,7 +44,6 @@ export class MainContentComponent implements OnInit {
   selectedOrganizations: string[] = [];
   allHelpers: Helper[] = []; // unfiltered master list
 
-
   constructor(
     private helperService: HelperService,
     private route: ActivatedRoute,
@@ -53,7 +55,7 @@ export class MainContentComponent implements OnInit {
       next: (data) => {
         this.allHelpers = data;
         this.helpers = [...this.allHelpers];
-        
+
         // Route-based auto-selection logic
         const idFromRoute = Number(this.route.snapshot.paramMap.get('id'));
         if (idFromRoute) {
@@ -93,10 +95,9 @@ export class MainContentComponent implements OnInit {
       return matchesService && matchesOrg;
     });
 
-    if(this.helpers.length == 0){
+    if (this.helpers.length == 0) {
       this.selectedHelper = undefined;
-    }
-    else if (this.helpers.length > 0) {
+    } else if (this.helpers.length > 0) {
       this.selectedHelper = this.helpers[0];
       if (this.selectedHelper) {
         this.router.navigate(['/helpers', this.selectedHelper.id]);
@@ -113,5 +114,61 @@ export class MainContentComponent implements OnInit {
       this.selectedHelper = this.helpers[0];
       this.router.navigate(['/helpers', this.selectedHelper.id]);
     }
+  }
+
+  // getSelectedLanguagesDisplay(): string {
+  //   const selected = this.form.get('languages')?.value || [];
+
+  //   if (selected.length === 0) return 'Select languages';
+  //   if (selected.length === 1) return selected[0];
+
+  //   return `${selected[0]} +${selected.length - 1} more`;
+  // }
+
+  getSelectedServicesDisplay(): string {
+    const selected = this.selectedServices || [];
+    if (selected.length === 0) return 'Select Service';
+    if (selected.length === 1) return selected[0];
+
+    return `${selected[0]}, +${selected.length - 1} more`;
+  }
+
+  getSelectedOrganizationsDisplay(): string {
+    const selected = this.selectedOrganizations || [];
+    if (selected.length === 0) return 'Select Organization';
+    if (selected.length === 1) return selected[0];
+
+    return `${selected[0]}, +${selected.length - 1} more`;
+  }
+
+  toggleSelectAllServices() {
+    if (this.isAllServicesSelected()) {
+      this.selectedServices = [];
+    } else {
+      this.selectedServices = [...this.services];
+    }
+  }
+  toggleSelectAllOrganizations() {
+    if (this.isAllOrganizationsSelected()) {
+      this.selectedOrganizations = [];
+    } else {
+      this.selectedOrganizations = [...this.organizations];
+    }
+  }
+
+  isAllServicesSelected(): boolean {
+    return (
+      this.services.length > 0 &&
+      this.services.every((service) => this.selectedServices.includes(service))
+    );
+  }
+
+  isAllOrganizationsSelected(): boolean {
+    return (
+      this.organizations.length > 0 &&
+      this.organizations.every((org) =>
+        this.selectedOrganizations.includes(org)
+      )
+    );
   }
 }

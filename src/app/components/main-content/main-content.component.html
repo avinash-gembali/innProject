@@ -67,9 +67,19 @@
           <mat-form-field appearance="fill" class="filter-field">
             <mat-label>Select Service</mat-label>
             <mat-select multiple [(value)]="selectedServices">
-              <mat-option *ngFor="let service of services" [value]="service">{{
-                service
-              }}</mat-option>
+              <mat-select-trigger>
+                {{ getSelectedServicesDisplay() }}
+              </mat-select-trigger>
+              <mat-option
+                (click)="toggleSelectAllServices(); $event.stopPropagation()"
+                [value]="null"
+              >
+                Select All
+              </mat-option>
+
+              <mat-option *ngFor="let service of services" [value]="service">
+                {{ service }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -77,9 +87,19 @@
           <mat-form-field appearance="fill" class="filter-field">
             <mat-label>Select Organization</mat-label>
             <mat-select multiple [(value)]="selectedOrganizations">
-              <mat-option *ngFor="let org of organizations" [value]="org">{{
-                org
-              }}</mat-option>
+              <mat-select-trigger>
+                {{ getSelectedOrganizationsDisplay() }}
+              </mat-select-trigger>
+              <mat-option
+                (click)="toggleSelectAllOrganizations(); $event.stopPropagation()"
+                [value]="null"
+              >
+                Select All
+              </mat-option>
+
+              <mat-option *ngFor="let org of organizations" [value]="org">
+                {{ org }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
