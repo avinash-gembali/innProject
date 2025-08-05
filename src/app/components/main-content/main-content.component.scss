@@ -124,7 +124,7 @@
 }
 
 ::ng-deep .sort-menu {
-  .selected{
+  .selected {
     background-color: #e3f2fd;
   }
   h3.sort-title {
@@ -192,6 +192,25 @@
 
     &:hover {
       background-color: #f0f0f0 !important;
+    }
+
+    ::ng-deep .filter-header {
+      display: flex;
+      align-items: center;
+      padding: 4px 0 8px;
+      font-weight: 600;
+      font-size: 14px;
+
+      .filter-label {
+        color: #333;
+      }
+
+      .reset-btn {
+        margin-left: auto; // pushes it to far right
+        font-size: 12px;
+        padding: 0;
+        min-width: auto;
+      }
     }
   }
 }

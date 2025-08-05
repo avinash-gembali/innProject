@@ -63,6 +63,18 @@
         >
           <h3 class="filter-title">Filter By</h3>
 
+          <div class="filter-header">
+            <span class="filter-label">Service</span>
+            <button
+              mat-button
+              color="warn"
+              class="reset-btn"
+              (click)="selectedServices = []"
+            >
+              Reset
+            </button>
+          </div>
+
           <!-- Service Filter -->
           <mat-form-field appearance="fill" class="filter-field">
             <mat-label>Select Service</mat-label>
@@ -83,6 +95,17 @@
             </mat-select>
           </mat-form-field>
 
+          <div class="filter-header">
+            <span class="filter-label">Organization</span>
+            <button
+              mat-button
+              color="warn"
+              class="reset-btn"
+              (click)="selectedOrganizations = []"
+            >
+              Reset
+            </button>
+          </div>
           <!-- Organization Filter -->
           <mat-form-field appearance="fill" class="filter-field">
             <mat-label>Select Organization</mat-label>
@@ -91,7 +114,9 @@
                 {{ getSelectedOrganizationsDisplay() }}
               </mat-select-trigger>
               <mat-option
-                (click)="toggleSelectAllOrganizations(); $event.stopPropagation()"
+                (click)="
+                  toggleSelectAllOrganizations(); $event.stopPropagation()
+                "
                 [value]="null"
               >
                 Select All
