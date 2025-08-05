@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { NgFor, NgIf } from '@angular/common';
 import { SelectedHelperComponent } from '../selected-helper/selected-helper.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-helpers',
@@ -15,8 +16,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './helpers.component.scss',
 })
 export class HelpersComponent implements OnInit {
-  helpers: Helper[] = [];
-  selectedHelper?: Helper;
+  @Input() helpers: Helper[] = [];
+  @Input() selectedHelper?: Helper;
 
   constructor(
     private helperService: HelperService,
@@ -25,7 +26,7 @@ export class HelpersComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadHelpers();
+    // this.loadHelpers();
   }
 
   onHelperDeleted() {
@@ -44,22 +45,22 @@ export class HelpersComponent implements OnInit {
     });
   }
 
-  loadHelpers() {
-    this.helperService.getHelpers().subscribe((data) => {
-      this.helpers = data;
+  // loadHelpers() {
+  //   this.helperService.getHelpers().subscribe((data) => {
+  //     this.helpers = data;
 
-      // Optional: auto-select first helper if route ID is missing
-      const idFromRoute = Number(this.route.snapshot.paramMap.get('id'));
-      if (idFromRoute) {
-        const match = this.helpers.find((h) => h.id === idFromRoute);
-        if (match) {
-          this.selectedHelper = match;
-        }
-      } else {
-        this.selectedHelper = this.helpers[0];
-      }
-    });
-  }
+  //     // Optional: auto-select first helper if route ID is missing
+  //     const idFromRoute = Number(this.route.snapshot.paramMap.get('id'));
+  //     if (idFromRoute) {
+  //       const match = this.helpers.find((h) => h.id === idFromRoute);
+  //       if (match) {
+  //         this.selectedHelper = match;
+  //       }
+  //     } else {
+  //       this.selectedHelper = this.helpers[0];
+  //     }
+  //   });
+  // }
 
   selectHelper(helper: Helper) {
     this.selectedHelper = helper;

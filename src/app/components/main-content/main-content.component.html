@@ -4,7 +4,40 @@
 <div class="content">
   <div class="functions">
     <div class="left">
-      <button class="icon-btn sort" title="Sort">
+      <button
+        class="icon-btn sort"
+        matbutton
+        [matMenuTriggerFor]="menu"
+        title="Sort"
+      >
+        <mat-menu #menu="matMenu" class="sort-menu">
+          <h3 class="sort-title">Sort by</h3>
+
+          <button
+            mat-menu-item
+            (click)="sortByName()"
+            [class.selected]="selectedSort === 'name'"
+          >
+            <span class="menu-label">Helpers Name (A-Z)
+            <mat-icon *ngIf="selectedSort === 'name'" class="check-icon"
+              >check</mat-icon
+            >
+            </span>
+          </button>
+
+          <button
+            mat-menu-item
+            (click)="sortByID()"
+            [class.selected]="selectedSort === 'id'"
+          >
+            <span class="menu-label">Employee ID
+            <mat-icon *ngIf="selectedSort === 'id'" class="check-icon"
+              >check</mat-icon
+            >
+            </span>
+          </button>
+        </mat-menu>
+
         <mat-icon>unfold_more</mat-icon>
       </button>
 
@@ -34,5 +67,8 @@
       </button>
     </div>
   </div>
-  <app-helpers></app-helpers>
+  <app-helpers
+    [helpers]="helpers"
+    [selectedHelper]="selectedHelper"
+  ></app-helpers>
 </div>
