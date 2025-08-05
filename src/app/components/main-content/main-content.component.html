@@ -10,40 +10,87 @@
         [matMenuTriggerFor]="menu"
         title="Sort"
       >
-        <mat-menu #menu="matMenu" class="sort-menu">
-          <h3 class="sort-title">Sort by</h3>
-
-          <button
-            mat-menu-item
-            (click)="sortByName()"
-            [class.selected]="selectedSort === 'name'"
-          >
-            <span class="menu-label">Helpers Name (A-Z)
-            <mat-icon *ngIf="selectedSort === 'name'" class="check-icon"
-              >check</mat-icon
-            >
-            </span>
-          </button>
-
-          <button
-            mat-menu-item
-            (click)="sortByID()"
-            [class.selected]="selectedSort === 'id'"
-          >
-            <span class="menu-label">Employee ID
-            <mat-icon *ngIf="selectedSort === 'id'" class="check-icon"
-              >check</mat-icon
-            >
-            </span>
-          </button>
-        </mat-menu>
-
         <mat-icon>unfold_more</mat-icon>
       </button>
 
-      <button class="icon-btn filter" title="Filter">
+      <mat-menu #menu="matMenu" class="sort-menu">
+        <h3 class="sort-title">Sort by</h3>
+
+        <button
+          mat-menu-item
+          (click)="sortByName()"
+          [class.selected]="selectedSort === 'name'"
+        >
+          <span class="menu-label"
+            >Helpers Name (A-Z)
+            <mat-icon *ngIf="selectedSort === 'name'" class="check-icon"
+              >check</mat-icon
+            >
+          </span>
+        </button>
+
+        <button
+          mat-menu-item
+          (click)="sortByID()"
+          [class.selected]="selectedSort === 'id'"
+        >
+          <span class="menu-label"
+            >Employee ID
+            <mat-icon *ngIf="selectedSort === 'id'" class="check-icon"
+              >check</mat-icon
+            >
+          </span>
+        </button>
+      </mat-menu>
+
+      <button
+        class="icon-btn filter"
+        [matMenuTriggerFor]="filterMenu"
+        title="Filter"
+      >
         <mat-icon>filter_list</mat-icon>
       </button>
+
+      <mat-menu
+        #filterMenu="matMenu"
+        class="filter-menu"
+        [overlapTrigger]="false"
+      >
+        <div
+          matMenuContent
+          class="filter-content"
+          (click)="$event.stopPropagation()"
+        >
+          <h3 class="filter-title">Filter By</h3>
+
+          <!-- Service Filter -->
+          <mat-form-field appearance="fill" class="filter-field">
+            <mat-label>Select Service</mat-label>
+            <mat-select multiple [(value)]="selectedServices">
+              <mat-option *ngFor="let service of services" [value]="service">{{
+                service
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Organization Filter -->
+          <mat-form-field appearance="fill" class="filter-field">
+            <mat-label>Select Organization</mat-label>
+            <mat-select multiple [(value)]="selectedOrganizations">
+              <mat-option *ngFor="let org of organizations" [value]="org">{{
+                org
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <!-- Action Buttons -->
+        <div class="filter-actions">
+          <button mat-button (click)="resetFilters()">Reset</button>
+          <button mat-flat-button color="primary" (click)="applyFilters()">
+            Apply
+          </button>
+        </div>
+      </mat-menu>
 
       <button class="icon-btn calendar" title="Calendar">
         <mat-icon>calendar_today</mat-icon>
