@@ -149,7 +149,7 @@ export class MainContentComponent implements OnInit {
   }
 
   searchText = '';
-  
+
   filterHelpers() {
     this.updateHelpersList();
   }
@@ -179,5 +179,15 @@ export class MainContentComponent implements OnInit {
       this.selectedHelper = this.helpers[0];
       this.router.navigate(['/helpers', this.selectedHelper.id]);
     }
+  }
+
+  isFilterApplied(): boolean {
+    const text = this.searchText.trim().toLowerCase();
+
+    return (
+      this.selectedServices.length > 0 ||
+      this.selectedOrganizations.length > 0 ||
+      text.length > 0
+    );
   }
 }
