@@ -7,6 +7,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { SelectedHelperComponent } from '../selected-helper/selected-helper.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Input } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-helpers',
@@ -22,7 +23,8 @@ export class HelpersComponent implements OnInit {
   constructor(
     private helperService: HelperService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location : Location,
   ) {}
 
   ngOnInit(): void {
@@ -39,7 +41,7 @@ export class HelpersComponent implements OnInit {
       } else {
         // No helpers left
         this.selectedHelper = undefined;
-        this.router.navigate(['/helpers']);
+        this.location.go('/helpers/not-found');
       }
     });
   }
