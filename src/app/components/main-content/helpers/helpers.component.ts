@@ -26,7 +26,6 @@ export class HelpersComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.loadHelpers();
   }
 
   onHelperDeleted() {
@@ -44,23 +43,6 @@ export class HelpersComponent implements OnInit {
       }
     });
   }
-
-  // loadHelpers() {
-  //   this.helperService.getHelpers().subscribe((data) => {
-  //     this.helpers = data;
-
-  //     // Optional: auto-select first helper if route ID is missing
-  //     const idFromRoute = Number(this.route.snapshot.paramMap.get('id'));
-  //     if (idFromRoute) {
-  //       const match = this.helpers.find((h) => h.id === idFromRoute);
-  //       if (match) {
-  //         this.selectedHelper = match;
-  //       }
-  //     } else {
-  //       this.selectedHelper = this.helpers[0];
-  //     }
-  //   });
-  // }
 
   selectHelper(helper: Helper) {
     this.selectedHelper = helper;
