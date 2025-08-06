@@ -14,6 +14,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPseudoCheckboxModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-main-content',
@@ -49,7 +50,8 @@ export class MainContentComponent implements OnInit {
   constructor(
     private helperService: HelperService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location:Location
   ) {}
 
   ngOnInit(): void {
@@ -175,6 +177,7 @@ export class MainContentComponent implements OnInit {
 
     if (this.helpers.length === 0) {
       this.selectedHelper = undefined;
+      this.location.go('/helpers/not-found');
     } else {
       this.selectedHelper = this.helpers[0];
       this.router.navigate(['/helpers', this.selectedHelper.id]);
