@@ -143,7 +143,7 @@
 
       <div class="search-wrapper">
         <mat-icon class="search-icon">search</mat-icon>
-        <input type="text" placeholder="Search by name, ID or phone" />
+        <input type="text" placeholder="Search by name, ID or phone" [(ngModel)]="searchText" (input)="filterHelpers()"/>
       </div>
 
       <div class="users">8 helpers</div>

@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPseudoCheckboxModule } from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-main-content',
@@ -29,6 +30,7 @@ import { MatPseudoCheckboxModule } from '@angular/material/core';
     MatOptionModule,
     MatCheckboxModule,
     MatPseudoCheckboxModule,
+    FormsModule,
   ],
   templateUrl: './main-content.component.html',
   styleUrl: './main-content.component.scss',
@@ -85,24 +87,7 @@ export class MainContentComponent implements OnInit {
   }
 
   applyFilters() {
-    this.helpers = this.allHelpers.filter((helper) => {
-      const matchesService =
-        this.selectedServices.length === 0 ||
-        this.selectedServices.includes(helper.role);
-      const matchesOrg =
-        this.selectedOrganizations.length === 0 ||
-        this.selectedOrganizations.includes(helper.organization);
-      return matchesService && matchesOrg;
-    });
-
-    if (this.helpers.length == 0) {
-      this.selectedHelper = undefined;
-    } else if (this.helpers.length > 0) {
-      this.selectedHelper = this.helpers[0];
-      if (this.selectedHelper) {
-        this.router.navigate(['/helpers', this.selectedHelper.id]);
-      }
-    }
+    this.updateHelpersList();
   }
 
   resetFilters() {
@@ -161,5 +146,38 @@ export class MainContentComponent implements OnInit {
         this.selectedOrganizations.includes(org)
       )
     );
+  }
+
+  searchText = '';
+  
+  filterHelpers() {
+    this.updateHelpersList();
+  }
+
+  // Unified filter/search logic
+  private updateHelpersList() {
+    const text = this.searchText.trim().toLowerCase();
+    this.helpers = this.allHelpers.filter((helper) => {
+      const matchesService =
+        this.selectedServices.length === 0 ||
+        this.selectedServices.includes(helper.role);
+      const matchesOrg =
+        this.selectedOrganizations.length === 0 ||
+        this.selectedOrganizations.includes(helper.organization);
+      const matchesSearch =
+        !text ||
+        helper.id.toString().includes(text) ||
+        helper.name.toLowerCase().includes(text) ||
+        helper.mobileNo.toLowerCase().includes(text);
+
+      return matchesService && matchesOrg && matchesSearch;
+    });
+
+    if (this.helpers.length === 0) {
+      this.selectedHelper = undefined;
+    } else {
+      this.selectedHelper = this.helpers[0];
+      this.router.navigate(['/helpers', this.selectedHelper.id]);
+    }
   }
 }
