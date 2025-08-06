@@ -103,12 +103,9 @@
       <mat-select-trigger>
         {{ getSelectedLanguagesDisplay() }}
       </mat-select-trigger>
-      <mat-option
-        (click)="toggleSelectAll(); $event.stopPropagation()"
-        [value]="null"
-      >
+      <mat-checkbox color="primary" (click) = "toggleSelectAll(); $event.stopPropagation()" [checked]="isAllSelected()">
         Select All
-      </mat-option>
+      </mat-checkbox>
       <mat-option *ngFor="let lang of languages" [value]="lang">
         {{ lang }}
       </mat-option>

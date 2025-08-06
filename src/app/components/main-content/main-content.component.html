@@ -82,12 +82,14 @@
               <mat-select-trigger>
                 {{ getSelectedServicesDisplay() }}
               </mat-select-trigger>
-              <mat-option
+
+              <mat-checkbox
+                color="primary"
                 (click)="toggleSelectAllServices(); $event.stopPropagation()"
-                [value]="null"
+                [checked]="isAllServicesSelected()"
               >
                 Select All
-              </mat-option>
+              </mat-checkbox>
 
               <mat-option *ngFor="let service of services" [value]="service">
                 {{ service }}
@@ -113,14 +115,13 @@
               <mat-select-trigger>
                 {{ getSelectedOrganizationsDisplay() }}
               </mat-select-trigger>
-              <mat-option
-                (click)="
-                  toggleSelectAllOrganizations(); $event.stopPropagation()
-                "
-                [value]="null"
+              <mat-checkbox
+                color="primary"
+                (click)="toggleSelectAllOrganizations(); $event.stopPropagation()"
+                [checked]="isAllOrganizationsSelected()"
               >
                 Select All
-              </mat-option>
+              </mat-checkbox>
 
               <mat-option *ngFor="let org of organizations" [value]="org">
                 {{ org }}
@@ -150,12 +151,12 @@
           (input)="filterHelpers()"
         />
       </div>
-      
+
       <div class="users" *ngIf="isFilterApplied(); else elseBlock">
         {{ helpers.length }} of {{ allHelpers.length }} helpers
       </div>
 
-      <ng-template #elseBlock> {{allHelpers.length}} helpers </ng-template>
+      <ng-template #elseBlock> {{ allHelpers.length }} helpers </ng-template>
     </div>
 
     <div class="right">
