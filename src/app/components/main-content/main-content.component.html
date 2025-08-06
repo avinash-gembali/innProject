@@ -146,7 +146,7 @@
         <input type="text" placeholder="Search by name, ID or phone" [(ngModel)]="searchText" (input)="filterHelpers()"/>
       </div>
 
-      <div class="users">8 helpers</div>
+      <div class="users">{{helpers.length}} of {{allHelpers.length}}  helpers</div>
     </div>
 
     <div class="right">
