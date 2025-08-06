@@ -1,6 +1,9 @@
 <div class="helpers-container">
   <!-- Sidebar -->
   <div class="profiles">
+    <div *ngIf="helpers?.length === 0" class="no-helpers-message">
+      No helpers found for the selected filters or they are empty
+    </div>
     <div
       *ngFor="let helper of helpers"
       class="profile-card"
