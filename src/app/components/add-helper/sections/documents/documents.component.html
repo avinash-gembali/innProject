@@ -4,9 +4,24 @@
 <div class="doc-upload" (click)="openUploadDialog()">
   <button>+</button>
 </div>
-<div class="uploaded-indicator" *ngIf="form.get('additionalDocument')?.value || fileexistname">
+<div
+  class="uploaded-indicator"
+  *ngIf="form.get('additionalDocument')?.value || fileexistname"
+>
   <mat-icon>picture_as_pdf</mat-icon>
-  <span>{{ form.get("additionalDocument")?.value?.fileName || fileexistname}} Uploaded</span>
-  <button (click)="removeDocument()">Remove</button>
-  <button (click)="openUploadDialog()">Change</button>
+  <span>
+    {{
+      form.get("additionalDocument")?.value?.fileName || fileexistname
+    }}
+    Uploaded
+  </span>
 </div>
+
+<button
+  (click)="removeDocument()"
+  mat-stroked-button
+  color="warn"
+  style="margin-top: 8px"
+>
+  Remove
+</button>

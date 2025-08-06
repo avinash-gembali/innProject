@@ -3,21 +3,18 @@ import { AdditionalDialogComponent } from '../additional-dialog/additional-dialo
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import {
-  ReactiveFormsModule,
-  FormGroup,
-  FormControl,
-} from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { FormGroup, FormControl } from '@angular/forms';
 import { Input } from '@angular/core';
 @Component({
   selector: 'app-documents',
   standalone: true,
-  imports: [MatIconModule, CommonModule],
+  imports: [MatIconModule, CommonModule, MatButtonModule],
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.scss',
 })
 export class DocumentsComponent {
-  @Input() fileexistname:string | undefined ='';
+  @Input() fileexistname: string | undefined = '';
   constructor(public dialog: MatDialog) {}
   form = new FormGroup({
     additionalDocument: new FormControl<{
@@ -48,8 +45,9 @@ export class DocumentsComponent {
   }
 
   removeDocument(): void {
-  this.form.patchValue({ additionalDocument: null });
-}
+    this.form.patchValue({ additionalDocument: null });
+    this.fileexistname = ''
+  }
 
   isFormValid(): boolean {
     if (this.form.invalid) {
@@ -58,5 +56,4 @@ export class DocumentsComponent {
     }
     return true;
   }
-
 }
