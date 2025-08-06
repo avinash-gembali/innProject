@@ -86,14 +86,14 @@ export class AddHelperComponent {
       this.helperDetailsComponent.selectedImageUrl = helper.imageUrl;
 
       // Step 2: Patch Additional Document
-      this.documentDetailsComponent?.form.patchValue({
-        additionalDocument: helper.additionalDocument
-          ? {
-              category: helper.additionalDocument.category,
-              fileName: helper.additionalDocument.fileName,
-            }
-          : null,
-      });
+      // this.documentDetailsComponent?.form.patchValue({
+      //   additionalDocument: helper.additionalDocument
+      //     ? {
+      //         category: helper.additionalDocument.category,
+      //         fileName: helper.additionalDocument.fileName,
+      //       }
+      //     : null,
+      // });
       this.additionalDocumentFileName = helper.additionalDocument?.fileName;
       this.additionalDocumentCategory = helper.additionalDocument?.category;
     });
