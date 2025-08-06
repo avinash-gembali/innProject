@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatButtonModule } from '@angular/material/button';
 import {
   ReactiveFormsModule,
   FormGroup,
@@ -27,6 +28,7 @@ import { UploadDialogComponent } from '../upload-dialog/upload-dialog.component'
     MatIconModule,
     MatCheckboxModule,
     MatRadioModule,
+    MatButtonModule,
   ],
   templateUrl: './helper-details.component.html',
   styleUrl: './helper-details.component.scss',
@@ -160,5 +162,9 @@ export class HelperDetailsComponent {
 
   removeKycDocument(): void {
     this.form.patchValue({ kycDocument: null });
+  }
+  removePhoto() {
+    this.selectedImageUrl = null;
+    this.form.patchValue({ photo: null, photoPreview: null });
   }
 }
