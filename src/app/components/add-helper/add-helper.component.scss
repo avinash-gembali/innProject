@@ -111,29 +111,54 @@
   }
 }
 
-.form-section {
+.formContainer {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0; // Prevents overflow when content is wide
+  max-height: calc(100vh - 80px); // Leave space for top bar and padding
+}
 
-  .buttons {
-    margin-top: 20px;
-    display: flex;
-    gap: 10px;
+.form-section {
+  flex: 1; // Takes all remaining space
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding-right: 8px;
+  padding-bottom: 20px;
+}
 
-    .btn {
-      padding: 8px 16px;
-      background-color: #1976d2;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+// Make inputs take full width (target inside your custom components if needed)
+app-helper-details,
+app-documents,
+app-review {
+  width: 95%;
+  display: block;
 
-      &:disabled {
-        background-color: #aaa;
-        cursor: not-allowed;
-      }
-    }
+  ::ng-deep input,
+  ::ng-deep textarea,
+  ::ng-deep mat-form-field {
+    width: 100%;
   }
 }
 
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  padding-bottom: 10px;
+
+  .btn {
+    padding: 8px 16px;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+  }
+}

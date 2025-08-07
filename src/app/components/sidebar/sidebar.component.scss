@@ -12,17 +12,37 @@
   flex-direction: column;
 }
 
-h1 {
-  font-size: 30px;
-  margin-bottom: 0px;
-  color: black;
-  font-style: bold;
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px; // space between icon and text group
 }
 
-h6 {
-  margin-top: 0;
-  color: black;
+.home-icon{
+  font-size: 50px;
+  color: #333;
+  height: auto;
+  width: auto;
 }
+
+.text-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 25px;
+  }
+
+  .subtitle {
+    font-size: 8px;
+    color: #777;
+    margin-bottom: 15px;
+  }
+}
+
 
 .arrow-icon {
   transition: transform 0.2s ease-in-out;

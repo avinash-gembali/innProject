@@ -1,10 +1,14 @@
 <div class="sidebar-container">
+  <div class="header">
+    <mat-icon class="home-icon">home</mat-icon>
+    <div class="text-group">
+     <span class="title">Manage</span>
+     <span class="subtitle">by ASBL Homes</span>
+    </div>
+  </div>
+  <app-search></app-search>
   <div class="sidebar-scrollable">
     <!-- Sidebar content here like menu items -->
-    <h1>Manage</h1>
-    <h6>by ASBL Homes</h6>
-    <app-search></app-search>
-
     <!-- RESIDENT MANAGEMENT -->
     <mat-nav-list>
       <mat-list-item (click)="toggleMenu('resident')">

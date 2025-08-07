@@ -35,19 +35,24 @@
       </div>
     </div>
 
-    <!-- Content Section -->
-    <div class="form-section">
-      <app-helper-details
-        *ngIf="currentStep === 0"
-        #helperDetails
-      ></app-helper-details>
-      <app-documents *ngIf="currentStep === 1" [fileexistname]="additionalDocumentFileName" #documentDetails></app-documents>
-      <app-review
-        *ngIf="currentStep === 2"
-        [helperData]="helperFormData"
-        [documentData]="documentFormData"
-      ></app-review>
-
+    <div class="formContainer">
+      <!-- Content Section -->
+      <div class="form-section">
+        <app-helper-details
+          *ngIf="currentStep === 0"
+          #helperDetails
+        ></app-helper-details>
+        <app-documents
+          *ngIf="currentStep === 1"
+          [fileexistname]="additionalDocumentFileName"
+          #documentDetails
+        ></app-documents>
+        <app-review
+          *ngIf="currentStep === 2"
+          [helperData]="helperFormData"
+          [documentData]="documentFormData"
+        ></app-review>
+      </div>
       <div class="buttons">
         <button class="btn" (click)="prevStep()" [disabled]="currentStep === 0">
           Back

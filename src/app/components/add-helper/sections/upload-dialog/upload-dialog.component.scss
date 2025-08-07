@@ -74,3 +74,13 @@ mat-dialog-actions {
     min-width: 80px;
   }
 }
+
+:host ::ng-deep .mat-mdc-form-field-infix {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+  min-height: unset !important; 
+}
+
+:host ::ng-deep .mat-mdc-select-trigger {
+  align-items: center !important;
+}

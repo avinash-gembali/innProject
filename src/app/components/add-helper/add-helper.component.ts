@@ -236,6 +236,18 @@ export class AddHelperComponent {
   }
 
   submit() {
+    // if (this.additionalDocumentFileName && this.additionalDocumentCategory) {
+    //   this.documentDetailsComponent?.form.patchValue({
+    //     additionalDocument: {
+    //       category : this.additionalDocumentCategory,
+    //       fileName : this.additionalDocumentFileName,
+    //     },
+    //   });
+    // } else {
+    //   this.documentDetailsComponent?.form.patchValue({
+    //     additionalDocument: null,
+    //   });
+    // }
     console.log(this.helperDetailsComponent);
 
     if (!this.documentDetailsComponent?.isFormValid()) {
