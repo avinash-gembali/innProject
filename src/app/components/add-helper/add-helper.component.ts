@@ -130,7 +130,6 @@ export class AddHelperComponent {
       }
 
       this.helperFormData = this.helperDetailsComponent.getFormData();
-      console.log('Helper Form Data', this.helperFormData);
     }
 
     if (this.currentStep == 1) {
@@ -139,7 +138,6 @@ export class AddHelperComponent {
         return;
       }
       this.documentFormData = this.documentDetailsComponent.getFormData();
-      console.log('Document Form Data', this.documentFormData);
     }
 
     if (this.currentStep === 2) {
@@ -250,16 +248,12 @@ export class AddHelperComponent {
     //     additionalDocument: null,
     //   });
     // }
-    console.log(this.helperDetailsComponent);
 
     if (!this.documentDetailsComponent?.isFormValid()) {
       console.warn('Document form is invalid');
       return;
     }
-
-    console.log(this.helperFormData);
     const documentData = this.documentDetailsComponent.getFormData();
-    console.log(documentData);
 
     const updatedHelper = {
       id: this.editingHelperId,
@@ -271,8 +265,6 @@ export class AddHelperComponent {
     const photo = updatedHelper.photo;
 
     if (photo) {
-      console.log('Uploading photo...');
-
       this.helperService.uploadImage(photo).subscribe({
         next: (response) => {
           updatedHelper.photoPreview = response.url;
