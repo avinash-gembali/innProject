@@ -14,6 +14,7 @@ import { HelperQrComponent } from './helper-qr/helper-qr.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { LoadingService } from '../../shared/loading.service';
 import { ActivatedRoute } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-add-helper',
@@ -26,6 +27,7 @@ import { ActivatedRoute } from '@angular/router';
     NgIf,
     NgFor,
     MatProgressBarModule,
+    MatIconModule
   ],
   templateUrl: './add-helper.component.html',
   styleUrl: './add-helper.component.scss',
