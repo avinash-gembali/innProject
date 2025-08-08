@@ -3,6 +3,7 @@
   flex-direction: column;
   height: 100vh;
   background-color: #fafafa;
+  padding: 8px;
 }
 
 .sidebar-scrollable {
@@ -15,7 +16,6 @@
 .header {
   display: flex;
   align-items: center;
-  gap: 8px; // space between icon and text group
 }
 
 .home-icon{
@@ -69,29 +69,30 @@
 
 .submenu {
   padding-left: 20px;
-  margin-top: 4px;
 
   mat-list-item {
-    padding: 4px 0;
-
     .submenu-item {
       display: flex;
       align-items: center;
       font-size: 13px;
       color: #333;
+      font-weight: bold; // make text bold
 
       .submenu-icon {
         font-size: 20px;
-        margin-right: 10px;
-        color: #555;
+        margin-right: 8px;
+        color: #333;
+        font-weight: bold; // make icon bold
       }
 
       span {
         vertical-align: middle;
+        font-weight: bold; // ensure text is bold
       }
     }
   }
 }
+
 .sidebar-user {
   margin-top: auto; // Pushes this div to the bottom of column
   display: flex;
