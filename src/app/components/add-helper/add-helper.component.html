@@ -1,7 +1,9 @@
 <div class="container">
   <div class="top-bar">
     <mat-icon class="back-arrow" [routerLink]="['']">chevron_left</mat-icon>
-    <span class="page-title">Add Helper</span>
+    <span class="page-title">
+      {{ isEditMode ? "Edit Helper" : "Add Helper" }}
+    </span>
   </div>
 
   <div class="body">
