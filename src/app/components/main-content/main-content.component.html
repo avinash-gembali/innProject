@@ -77,8 +77,8 @@
           </div>
 
           <!-- Service Filter -->
-          <mat-form-field appearance="fill" class="filter-field">
-            <mat-label *ngIf="!selectedServices?.length">Select Service</mat-label>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Select Service</mat-label>
             <mat-select multiple [(value)]="selectedServices">
               <mat-select-trigger>
                 {{ getSelectedServicesDisplay() }}
@@ -110,8 +110,8 @@
             </button>
           </div>
           <!-- Organization Filter -->
-          <mat-form-field appearance="fill" class="filter-field">
-            <mat-label *ngIf="!selectedOrganizations?.length">Select Organization</mat-label>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Select Organization</mat-label>
             <mat-select multiple [(value)]="selectedOrganizations">
               <mat-select-trigger>
                 {{ getSelectedOrganizationsDisplay() }}
