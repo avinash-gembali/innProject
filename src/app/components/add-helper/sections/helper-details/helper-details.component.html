@@ -38,7 +38,7 @@
 
   <!-- Type of Service -->
   <label for="service">Type of service <span>*</span></label>
-  <mat-form-field appearance="outline" class="full-width" floatLabel="always">
+  <mat-form-field appearance="outline" class="full-width">
     <mat-select
       id="service"
       formControlName="service"
@@ -60,7 +60,7 @@
 
   <!-- Organization -->
   <label for="organization">Organization Name <span>*</span></label>
-  <mat-form-field appearance="outline" class="full-width" floatLabel="always">
+  <mat-form-field appearance="outline" class="full-width">
     <mat-select
       id="organization"
       formControlName="organization"
@@ -103,7 +103,7 @@
 
   <!-- Languages -->
   <label for="languages">Languages <span>*</span></label>
-  <mat-form-field appearance="outline" class="full-width" floatLabel="always">
+  <mat-form-field appearance="outline" class="full-width">
     <mat-select
       id="languages"
       formControlName="languages"
@@ -181,7 +181,7 @@
 
   <!-- Vehicle -->
   <label for="vehicle">Choose vehicle type</label>
-  <mat-form-field appearance="outline" class="full-width" floatLabel="always">
+  <mat-form-field appearance="outline" class="full-width">
     <mat-select formControlName="vehicle" id="vehicle" placeholder="None">
       <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle">
         {{ vehicle }}
