@@ -152,3 +152,7 @@
     color: #00796b;
   }
 }
+
+::ng-deep .mdc-list {
+  padding: 0 !important;
+}

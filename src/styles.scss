@@ -5,25 +5,3 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-// styles.scss (global)
-.mat-mdc-form-field-infix {
-  padding-top: 4px !important;
-  padding-bottom: 4px !important;
-  min-height: 40px !important;
-}
-
-.mat-mdc-select-trigger {
-  height: 35px !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-.mat-mdc-select-panel .mat-mdc-option {
-  height: 35px !important;
-  font-size: 14px !important;
-}
-
-.mdc-list {
-  padding: 0 !important;
-}

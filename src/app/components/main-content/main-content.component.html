@@ -58,6 +58,7 @@
       >
         <div
           matMenuContent
+          class="filter-menu"
           class="filter-content"
           (click)="$event.stopPropagation()"
         >
@@ -77,7 +78,7 @@
 
           <!-- Service Filter -->
           <mat-form-field appearance="fill" class="filter-field">
-            <mat-label>Select Service</mat-label>
+            <mat-label *ngIf="!selectedServices?.length">Select Service</mat-label>
             <mat-select multiple [(value)]="selectedServices">
               <mat-select-trigger>
                 {{ getSelectedServicesDisplay() }}
@@ -110,7 +111,7 @@
           </div>
           <!-- Organization Filter -->
           <mat-form-field appearance="fill" class="filter-field">
-            <mat-label>Select Organization</mat-label>
+            <mat-label *ngIf="!selectedOrganizations?.length">Select Organization</mat-label>
             <mat-select multiple [(value)]="selectedOrganizations">
               <mat-select-trigger>
                 {{ getSelectedOrganizationsDisplay() }}

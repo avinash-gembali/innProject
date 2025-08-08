@@ -151,13 +151,13 @@
 
 ::ng-deep .filter-menu {
   padding: 0;
-  max-width: 280px;
+  max-width: 300px;
 
   .filter-content {
     padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    width: 270px;
 
     h3.filter-title {
       margin: 0;
@@ -210,4 +210,9 @@
         min-width: auto;
       }
     }
+}
+
+::ng-deep .mat-mdc-menu-panel {
+  max-width: 300px !important;
+  width: 300px !important;
 }
