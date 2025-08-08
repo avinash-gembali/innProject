@@ -10,7 +10,7 @@ export interface Helper {
   emailId: string;
   organization: string;
   joinedOn: string;
-  vehicle?: string; // ✅ NEW
+  vehicle?: string; 
   vehicleNumber?: string;
   kycDocument?: {
     category: string;
