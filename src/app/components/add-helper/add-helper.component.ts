@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { DocumentsComponent } from './sections/documents/documents.component';
 import { HelperDetailsComponent } from './sections/helper-details/helper-details.component';
@@ -32,7 +32,7 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './add-helper.component.html',
   styleUrl: './add-helper.component.scss',
 })
-export class AddHelperComponent {
+export class AddHelperComponent implements OnInit{
   isEditMode = false;
   editingHelperId!: number;
   additionalDocumentFileName?: string;
@@ -48,6 +48,9 @@ export class AddHelperComponent {
     private loadingService: LoadingService,
     private route: ActivatedRoute
   ) {
+  }
+
+  ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
