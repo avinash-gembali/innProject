@@ -37,6 +37,7 @@ export class AddHelperComponent implements OnInit{
   editingHelperId!: number;
   additionalDocumentFileName?: string;
   additionalDocumentCategory?: string;
+  date = '';
   @ViewChild('helperDetails') helperDetailsComponent!: HelperDetailsComponent;
 
   @ViewChild('documentDetails') documentDetailsComponent!: DocumentsComponent;
@@ -87,6 +88,8 @@ export class AddHelperComponent implements OnInit{
             }
           : null,
       });
+
+      this.date = helper.joinedOn;
 
       this.helperDetailsComponent.selectedImageUrl = helper.imageUrl;
 
@@ -263,6 +266,7 @@ export class AddHelperComponent implements OnInit{
       employeeCode: this.employeeCode,
       ...this.helperFormData,
       ...documentData,
+      joinedOn : this.date
     };
 
     const photo = updatedHelper.photo;
