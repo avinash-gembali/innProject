@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -33,8 +33,45 @@ import { UploadDialogComponent } from '../upload-dialog/upload-dialog.component'
   templateUrl: './helper-details.component.html',
   styleUrl: './helper-details.component.scss',
 })
-export class HelperDetailsComponent {
+export class HelperDetailsComponent implements OnInit {
   constructor(public dialog: MatDialog) {}
+  ngOnInit() {
+    this.form = new FormGroup({
+      service: new FormControl<string | null>(null, Validators.required),
+      organization: new FormControl<string | null>(null, Validators.required),
+      fullName: new FormControl('', Validators.required),
+      languages: new FormControl<string[]>([], Validators.required),
+      gender: new FormControl('', Validators.required),
+      phone: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/^[0-9]{10}$/),
+      ]),
+      email: new FormControl('', Validators.email),
+      vehicle: new FormControl('none'),
+      vehicleNumber: new FormControl(''),
+      photo: new FormControl<File | null>(null),
+      photoPreview: new FormControl<string | ArrayBuffer | null>(null),
+      kycDocument: new FormControl<{
+        category: string;
+        fileName: string;
+      } | null>(null, Validators.required),
+    });
+
+    // Watch for changes in "vehicle"
+    this.form.get('vehicle')?.valueChanges.subscribe((value) => {
+      const vehicleNumberControl = this.form.get('vehicleNumber');
+
+      if (value && value !== 'none') {
+        vehicleNumberControl?.setValidators([Validators.required]);
+      } else {
+        vehicleNumberControl?.clearValidators();
+        vehicleNumberControl?.setValue(''); // reset if hidden
+      }
+
+      vehicleNumberControl?.updateValueAndValidity();
+    });
+  }
+
   form = new FormGroup({
     service: new FormControl<string | null>(null, Validators.required),
     organization: new FormControl<string | null>(null, Validators.required),
