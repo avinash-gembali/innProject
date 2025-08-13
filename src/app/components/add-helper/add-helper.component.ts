@@ -27,12 +27,12 @@ import { MatIconModule } from '@angular/material/icon';
     NgIf,
     NgFor,
     MatProgressBarModule,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './add-helper.component.html',
   styleUrl: './add-helper.component.scss',
 })
-export class AddHelperComponent implements OnInit{
+export class AddHelperComponent implements OnInit {
   isEditMode = false;
   editingHelperId!: number;
   additionalDocumentFileName?: string;
@@ -48,8 +48,7 @@ export class AddHelperComponent implements OnInit{
     private router: Router,
     private loadingService: LoadingService,
     private route: ActivatedRoute
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -65,12 +64,13 @@ export class AddHelperComponent implements OnInit{
     });
   }
   employeeCode = '';
-
+  imageCloudinaryUrl = '';
   loadHelperData(id: number) {
     this.helperService.getHelperById(id).subscribe((response) => {
       const helper = response.data;
       // Step 1: Patch Helper Details
       this.employeeCode = helper.employeeCode;
+      this.imageCloudinaryUrl = helper.imageUrl;
       this.helperDetailsComponent?.form.patchValue({
         service: helper.role,
         organization: helper.organization,
@@ -154,84 +154,69 @@ export class AddHelperComponent implements OnInit{
       const imageFile = form.photo;
       this.loadingService.show();
 
-      const createAndSaveHelper = (imageUrl: string) => {
-        this.helperService.getHelpers().subscribe((response) => {
-          const helpers = response.data;
-          const newId = helpers.length
-            ? Math.max(...helpers.map((h) => h.id)) + 1
-            : 1;
+      this.helperService.getHelpers().subscribe((response) => {
+        const helpers = response.data;
+        const newId = helpers.length
+          ? Math.max(...helpers.map((h) => h.id)) + 1
+          : 1;
 
-          const newHelper: Helper = {
-            id: newId,
-            name: form.fullName || '-',
-            role: form.service || '-',
-            imageUrl: imageUrl || '',
-            employeeCode: 'EMP' + newId.toString().padStart(4, '0'),
-            gender: form.gender || '-',
-            languages: form.languages || [],
-            mobileNo: form.phone || '-',
-            emailId: form.email || '',
-            vehicle: form.vehicle || 'none',
-            vehicleNumber: form.vehicleNumber || '',
-            organization: form.organization || '-',
-            joinedOn: new Date().toISOString().split('T')[0],
-            additionalDocument: doc?.additionalDocument
-              ? {
-                  category: doc.additionalDocument.category,
-                  fileName: doc.additionalDocument.fileName,
-                }
-              : undefined,
-            kycDocument: form?.kycDocument
-              ? {
-                  category: form.kycDocument.category,
-                  fileName: form.kycDocument.fileName,
-                }
-              : undefined,
-          };
+        const newHelper: Helper = {
+          id: newId,
+          name: form.fullName || '-',
+          role: form.service || '-',
+          profile: imageFile,
+          imageUrl: '',
+          employeeCode: 'EMP' + newId.toString().padStart(4, '0'),
+          gender: form.gender || '-',
+          languages: form.languages || [],
+          mobileNo: form.phone || '-',
+          emailId: form.email || '',
+          vehicle: form.vehicle || 'none',
+          vehicleNumber: form.vehicleNumber || '',
+          organization: form.organization || '-',
+          joinedOn: new Date().toISOString().split('T')[0],
+          additionalDocument: doc?.additionalDocument
+            ? {
+                category: doc.additionalDocument.category,
+                fileName: doc.additionalDocument.fileName,
+              }
+            : undefined,
+          kycDocument: form?.kycDocument
+            ? {
+                category: form.kycDocument.category,
+                fileName: form.kycDocument.fileName,
+              }
+            : undefined,
+        };
 
-          this.helperService.addHelper(newHelper).subscribe({
-            next: (response) => {
-              const savedHelper = response.data;
-              this.loadingService.hide();
-              const dialogRef = this.dialog.open(AddedDialogComponent, {
-                height: '300px',
-                width: '500px',
-                data: { name: savedHelper.name },
-              });
-
-              dialogRef.afterClosed().subscribe(() => {
-                this.dialog.open(HelperQrComponent, {
-                  height: '500px',
-                  width: '500px',
-                  data: savedHelper,
-                });
-              });
-
-              this.router.navigate(['/helpers', savedHelper.id]);
-            },
-            error: (err) => {
-              this.loadingService.hide();
-              console.error('Error saving helper:', err);
-            },
-          });
-        });
-      };
-
-      if (imageFile && imageFile instanceof File) {
-        // ✅ Only upload if file exists
-        this.helperService.uploadImage(imageFile).subscribe({
+        this.helperService.addHelper(newHelper).subscribe({
           next: (response) => {
-            createAndSaveHelper(response.data);
-          },
-          error: (uploadErr) => {
+            const savedHelper = response.data;
             this.loadingService.hide();
-            console.error('Image upload failed:', uploadErr);
+            const dialogRef = this.dialog.open(AddedDialogComponent, {
+              height: '300px',
+              width: '500px',
+              data: { name: savedHelper.name },
+            });
+
+            dialogRef.afterClosed().subscribe(() => {
+              this.dialog.open(HelperQrComponent, {
+                height: '500px',
+                width: '500px',
+                data: savedHelper,
+              });
+            });
+
+            this.router.navigate(['/helpers', savedHelper.id]);
+          },
+          error: (err) => {
+            this.loadingService.hide();
+            console.error('Error saving helper:', err);
           },
         });
-      } else {
-        createAndSaveHelper('');
-      }
+      });
     }
+    
     if (this.currentStep < this.steps.length - 1) {
       this.currentStep++;
     }
@@ -266,30 +251,23 @@ export class AddHelperComponent implements OnInit{
 
     const updatedHelper = {
       id: this.editingHelperId,
+      name : this.helperFormData.fullName,
       employeeCode: this.employeeCode,
-      ...this.helperFormData,
+      profile : this.helperFormData.photo,
+      role : this.helperFormData.service,
+      organization : this.helperFormData.organization,
+      languages : this.helperFormData.languages,
+      gender : this.helperFormData.gender,
+      mobileNo : this.helperFormData.phone,
+      emailId : this.helperFormData.email,
+      imageUrl : this.imageCloudinaryUrl,
+      kycDocument : this.helperFormData.kycDocument,
+      vehicle : this.helperFormData.vehicle,
+      vehicleNumber : this.helperFormData.vehicleNumber,
       ...documentData,
-      joinedOn : this.date
+      joinedOn: this.date,
     };
 
-    const photo = updatedHelper.photo;
-
-    if (photo) {
-      this.helperService.uploadImage(photo).subscribe({
-        next: (response) => {
-          updatedHelper.photoPreview = response.data;
-          this.sendUpdate(updatedHelper);
-        },
-        error: (uploadErr) => {
-          this.loadingService.hide();
-          console.error('Image upload failed:', uploadErr);
-        },
-      });
-    } else {
-      this.sendUpdate(updatedHelper);
-    }
-  }
-  private sendUpdate(updatedHelper: any) {
     this.helperService
       .updateHelper(this.editingHelperId, updatedHelper)
       .subscribe({

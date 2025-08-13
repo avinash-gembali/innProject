@@ -169,6 +169,12 @@
     Phone number is required
   </mat-error>
 
+  <mat-error
+    *ngIf="form.get('phone')?.hasError('pattern') && form.get('phone')?.touched"
+  >
+    Phone number must be exactly 10 digits
+  </mat-error>
+
   <!-- Email -->
   <label for="email">Email</label>
   <input

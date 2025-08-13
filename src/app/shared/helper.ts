@@ -2,6 +2,7 @@ export interface Helper {
   id: number;
   name: string;
   role: string;
+  profile : File;
   imageUrl: string;
   employeeCode: string;
   gender: string;
