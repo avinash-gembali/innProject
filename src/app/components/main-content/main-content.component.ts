@@ -56,8 +56,8 @@ export class MainContentComponent implements OnInit {
 
   ngOnInit(): void {
     this.helperService.getHelpers().subscribe({
-      next: (data) => {
-        this.allHelpers = data;
+      next: (response) => {
+        this.allHelpers = response.data;
         this.helpers = [...this.allHelpers];
 
         // Route-based auto-selection logic

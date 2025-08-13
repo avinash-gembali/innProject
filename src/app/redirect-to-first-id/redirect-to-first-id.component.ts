@@ -15,7 +15,8 @@ export class RedirectToFirstIdComponent implements OnInit {
 
   ngOnInit(): void {
     this.helperService.getHelpers().subscribe({
-      next:(helpers) => {
+      next:(response) => {
+        const helpers = response.data;
         if(helpers.length > 0){
           this.router.navigate(['/helpers',helpers[0].id]);
         }

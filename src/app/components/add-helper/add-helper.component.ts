@@ -67,7 +67,8 @@ export class AddHelperComponent implements OnInit{
   employeeCode = '';
 
   loadHelperData(id: number) {
-    this.helperService.getHelperById(id).subscribe((helper) => {
+    this.helperService.getHelperById(id).subscribe((response) => {
+      const helper = response.data;
       // Step 1: Patch Helper Details
       this.employeeCode = helper.employeeCode;
       this.helperDetailsComponent?.form.patchValue({
@@ -154,7 +155,8 @@ export class AddHelperComponent implements OnInit{
       this.loadingService.show();
 
       const createAndSaveHelper = (imageUrl: string) => {
-        this.helperService.getHelpers().subscribe((helpers) => {
+        this.helperService.getHelpers().subscribe((response) => {
+          const helpers = response.data;
           const newId = helpers.length
             ? Math.max(...helpers.map((h) => h.id)) + 1
             : 1;
@@ -188,7 +190,8 @@ export class AddHelperComponent implements OnInit{
           };
 
           this.helperService.addHelper(newHelper).subscribe({
-            next: (savedHelper) => {
+            next: (response) => {
+              const savedHelper = response.data;
               this.loadingService.hide();
               const dialogRef = this.dialog.open(AddedDialogComponent, {
                 height: '300px',
@@ -218,7 +221,7 @@ export class AddHelperComponent implements OnInit{
         // ✅ Only upload if file exists
         this.helperService.uploadImage(imageFile).subscribe({
           next: (response) => {
-            createAndSaveHelper(response.url);
+            createAndSaveHelper(response.data);
           },
           error: (uploadErr) => {
             this.loadingService.hide();
@@ -274,7 +277,7 @@ export class AddHelperComponent implements OnInit{
     if (photo) {
       this.helperService.uploadImage(photo).subscribe({
         next: (response) => {
-          updatedHelper.photoPreview = response.url;
+          updatedHelper.photoPreview = response.data;
           this.sendUpdate(updatedHelper);
         },
         error: (uploadErr) => {

@@ -31,8 +31,8 @@ export class HelpersComponent implements OnInit {
   }
 
   onHelperDeleted() {
-    this.helperService.getHelpers().subscribe((data) => {
-      this.helpers = data;
+    this.helperService.getHelpers().subscribe((response) => {
+      this.helpers = response.data;
 
       if (this.helpers.length > 0) {
         // Auto-select the first available helper
